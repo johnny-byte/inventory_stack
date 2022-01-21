@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inventory_stack/config/bloc_wrapper.dart';
 import 'package:inventory_stack/config/get_it_congfig.dart';
 import 'package:inventory_stack/config/hive_config.dart';
-import 'package:inventory_stack/core/api/api.dart';
 import 'package:inventory_stack/core/logic/theme/theme_cubit.dart';
+import 'package:inventory_stack/ui/app.dart';
 
 Future main() async {
   await dotenv.load(fileName: ".env");
@@ -22,7 +21,7 @@ class AppRunner extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocWrapper(
       child: BlocBuilder<ThemeCubit, ThemeState>(builder: (context, state) {
-        ThemeData? themeData;
+        CupertinoThemeData? themeData;
         if (state is DarkTheme){
           themeData = state.data;
         }
@@ -30,64 +29,12 @@ class AppRunner extends StatelessWidget {
           themeData = state.data;
         }
 
-        return MaterialApp(
+        return CupertinoApp(
             title: 'Flutter Demo',
             theme: themeData,
-            home: App(),
+            home: const App(),
           );
       }),
-    );
-  }
-}
-
-class App extends StatelessWidget {
-  App({Key? key}) : super(key: key);
-  final ApiClient apiClient = ApiClient();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Text(dotenv.get('SERVER')),
-          const FaDuotoneIcon(FontAwesomeIcons.duotoneUser, primaryColor: Colors.amber, secondaryColor: Colors.blue,),
-          ElevatedButton(
-              onPressed: () async {
-                context.read<ThemeCubit>().swithTheme();
-              },
-              child: const Text("swith theme")),
-          ElevatedButton(
-              onPressed: () async {
-                var items = await apiClient.items();
-                debugPrint(items.length.toString());
-                items
-                    .where((element) =>
-                        element.type.name.toLowerCase().contains("теле"))
-                    .forEach((element) {
-                  debugPrint(element.name);
-                });
-              },
-              child: const Text("get all items")),
-          ElevatedButton(
-              onPressed: () async {
-                var items = await apiClient.places();
-                debugPrint(items.length.toString());
-              },
-              child: const Text("get all places")),
-          ElevatedButton(
-              onPressed: () async {
-                var items = await apiClient.typesAll();
-                debugPrint(items.length.toString());
-              },
-              child: const Text("get all types")),
-          ElevatedButton(
-              onPressed: () async {
-                var items = await apiClient.migrations();
-                debugPrint(items.length.toString());
-              },
-              child: const Text("get all migrations")),
-        ],
-      ),
     );
   }
 }

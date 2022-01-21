@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class ThemeRepository{
   bool isDark = true;
 
-  static final ThemeData light = ThemeData();
-  static final ThemeData dark = ThemeData.dark();
+  static const  CupertinoThemeData light = CupertinoThemeData(brightness: Brightness.light, primaryColor: CupertinoColors.systemOrange,);
+  static const  CupertinoThemeData dark = CupertinoThemeData(brightness: Brightness.dark, primaryColor: CupertinoColors.systemOrange,);
 
-  ThemeData get theme => isDark ? dark : light;
+  CupertinoThemeData get theme => isDark ? dark : light;
 
   swithTheme(){
     isDark = !isDark;

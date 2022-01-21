@@ -9,13 +9,13 @@ abstract class ThemeState extends Equatable {
 
 
 class LightTheme extends ThemeState{
-  final ThemeData data =ThemeRepository.light;
+  final CupertinoThemeData data =ThemeRepository.light;
 
   LightTheme();
 }
 
 class DarkTheme extends ThemeState{
-  final ThemeData data = ThemeRepository.dark;
+  final CupertinoThemeData data = ThemeRepository.dark;
 
   DarkTheme();
 }
