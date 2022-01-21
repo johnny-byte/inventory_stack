@@ -20,6 +20,7 @@ dependencies:
   hive: ^2.0.5
   hive_flutter: ^1.1.0
   get_it: ^7.2.0
+  font_awesome_flutter: ^9.2.0
 
 dev_dependencies:
   flutter_test:
@@ -28,6 +29,10 @@ dev_dependencies:
   retrofit_generator: ^4.0.0
   json_serializable: ^6.1.4
   flutter_lints: ^1.0.0
+
+dependency_overrides:
+  font_awesome_flutter:
+    path: "./packages/font_awesome_flutter"
 
 
 flutter:

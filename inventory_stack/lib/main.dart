@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inventory_stack/config/bloc_wrapper.dart';
 import 'package:inventory_stack/config/get_it_congfig.dart';
 import 'package:inventory_stack/config/hive_config.dart';
@@ -28,7 +29,7 @@ class AppRunner extends StatelessWidget {
         if (state is LightTheme){
           themeData = state.data;
         }
-        
+
         return MaterialApp(
             title: 'Flutter Demo',
             theme: themeData,
@@ -49,6 +50,7 @@ class App extends StatelessWidget {
       body: Column(
         children: [
           Text(dotenv.get('SERVER')),
+          const FaDuotoneIcon(FontAwesomeIcons.duotoneUser, primaryColor: Colors.amber, secondaryColor: Colors.blue,),
           ElevatedButton(
               onPressed: () async {
                 context.read<ThemeCubit>().swithTheme();
