@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:inventory_stack/ui/items/item_detail.dart';
 import 'package:inventory_stack/ui/migration/migration.dart';
 import 'package:inventory_stack/utils/icons.dart';
 
@@ -25,7 +26,7 @@ class _ItemsListElementState extends State<ItemsListElement> {
           constraints: const BoxConstraints(maxWidth: 600, minWidth: 300),
           child: GestureDetector(
             onTap: (){
-              //Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ItemDetailPage(data: widget.data)));
+              Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>const ItemDetailPage()));
             },
                   child: Container(
               height: 105,
@@ -77,13 +78,12 @@ class _ItemsListElementState extends State<ItemsListElement> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Container(
+                            child: SizedBox(
                                 height: 100,
                                 child: CupertinoButton(
                                   child: MigrationIcons.right,
                                   onPressed: () {
-                                    // Navigator.of(context).push(CupertinoPageRoute(
-                                    //     builder: (context) => ItemDetailPage(data: widget.data,)));
+                                    Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>const ItemDetailPage()));
                                   },
                                 )),
                           ),
