@@ -30,6 +30,7 @@ class AppRunner extends StatelessWidget {
         }
 
         return CupertinoApp(
+            debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
             theme: themeData,
             home: const App(),
