@@ -70,7 +70,7 @@ class _SearchBoxState extends State<SearchBox> {
               ),)
             ),
           ),
-          const SizedBox(height: 30),
+          if (type != SearchType.likeName) const SizedBox(height: 30),
           if (type != SearchType.likeName)
             CupertinoSegmentedControl(
                 groupValue: type,

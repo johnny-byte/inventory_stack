@@ -9,6 +9,21 @@ import 'package:inventory_stack/utils/icons.dart';
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
+  Widget getBody(index){
+    switch (index) {
+      case 0:
+        return MigrationsPage();
+      case 1:
+        return const ItemsPage();
+      case 2:
+        return PlacePage();
+      case 3:
+        return const SettingsPage();
+      default:
+        return MigrationsPage();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
@@ -37,15 +52,7 @@ class App extends StatelessWidget {
             tabBuilder: (BuildContext context, int index) {
               return CupertinoTabView(
                 builder: (BuildContext context) {
-                  return IndexedStack(
-                    index: index,
-                    children: [
-                      MigrationsPage(),
-                      ItemsPage(),
-                      PlacePage(),
-                      SettingsPage()
-                    ]
-                  );
+                  return getBody(index);
                 },
               );
             },
