@@ -8,11 +8,10 @@ import (
 )
 
 type Place struct {
-	ID          int       `pg:"id,pk" json:"id"`
 	CreateAt    time.Time `pg:"create_at" json:"create_at"`
 	UpgradeAt   time.Time `pg:"upgrade_at" json:"upgrade_at"`
 	DeleteAt    time.Time `pg:"delete_at" json:"delete_at"`
-	UUID        string    `pg:"uuid,unique" json:"uuid"`
+	UUID        string    `pg:"uuid,unique,pk" json:"uuid"`
 	Name        string    `pg:"name" json:"name"`
 	Description string    `pg:"description" json:"description"`
 }
@@ -26,8 +25,7 @@ func (itm *Place) CreatePlace(conn *pg.DB) error {
 
 func (itm *Place) GetDefault(conn *pg.DB) (*Place, error) {
 	place := &Place{}
-	if err := conn.Model(place).Where("id = ?0", itm.ID).
-		Select(); err != nil {
+	if err := conn.Model(place).First(); err != nil {
 		return nil, err
 	}
 	return place, nil

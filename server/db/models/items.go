@@ -8,17 +8,16 @@ import (
 )
 
 type Item struct {
-	ID             int       `pg:"id,pk" json:"id"`
+	UUID           string    `pg:"uuid,unique,pk" json:"uuid"`
 	CreateAt       time.Time `pg:"create_at" json:"create_at"`
 	UpgradeAt      time.Time `pg:"upgrade_at" json:"upgrade_at"`
 	DeleteAt       time.Time `pg:"delete_at" json:"delete_at"`
-	UUID           string    `pg:"uuid,unique" json:"uuid"`
 	SerialNumber   string    `pg:"serial_number" json:"serial_number"`
 	RegNumber      string    `pg:"reg_number" json:"reg_number"`
 	InternalNumber string    `pg:"internal_number,unique" json:"internal_number"`
 	Name           string    `pg:"name" json:"name" validate:"required"`
 	Description    string    `pg:"description" json:"description"`
-	Type           ItemType  `pg:"type,join_fk:id" json:"type"`
+	Type           ItemType  `pg:"type,join_fk:uuid" json:"type"`
 	Date           string    `pg:"date" json:"date"`
 	RootPlace      Place     `pg:"root_place,join_fk:id" json:"root_place"`
 	CurrentPlace   Place     `pg:"current_place,join_fk:id" json:"current_place"`

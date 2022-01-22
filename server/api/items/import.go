@@ -16,7 +16,7 @@ func Import(conn *pg.DB) func(ctx echo.Context) error {
 	return func(ctx echo.Context) error {
 		items := &models.ItemSync{}
 		defaultPlace := &models.Place{}
-		defaultPlace.ID = -1
+		defaultPlace.UUID = ""
 		defaultPlace, _ = defaultPlace.GetDefault(conn)
 
 		if err := ctx.Bind(items); err != nil {
@@ -34,7 +34,7 @@ func Import(conn *pg.DB) func(ctx echo.Context) error {
 					return err
 				}
 
-				if item.RootPlace.ID == 0 {
+				if item.RootPlace.UUID == "" {
 					item.RootPlace = *defaultPlace
 					item.CurrentPlace = *defaultPlace
 				}

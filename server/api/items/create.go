@@ -17,7 +17,7 @@ func Create(conn *pg.DB) func(ctx echo.Context) error {
 	return func(ctx echo.Context) error {
 		item := &models.Item{}
 		defaultPlace := &models.Place{}
-		defaultPlace.ID = -1
+		defaultPlace.UUID = ""
 		defaultPlace, _ = defaultPlace.GetDefault(conn)
 		fmt.Println(defaultPlace)
 
@@ -29,7 +29,7 @@ func Create(conn *pg.DB) func(ctx echo.Context) error {
 		if v.Validate() {
 			item.CreateAt = time.Now()
 			item.UpgradeAt = time.Now()
-			if item.RootPlace.ID == 0 {
+			if item.RootPlace.UUID == "" {
 				item.RootPlace = *defaultPlace
 				item.CurrentPlace = *defaultPlace
 			}

@@ -7,11 +7,10 @@ import (
 )
 
 type ItemType struct {
-	ID          int       `pg:"id,pk" json:"id"`
 	CreateAt    time.Time `pg:"create_at" json:"create_at"`
 	UpgradeAt   time.Time `pg:"upgrade_at" json:"upgrade_at"`
 	DeleteAt    time.Time `pg:"delete_at" json:"delete_at"`
-	UUID        string    `pg:"uuid,unique" json:"uuid"`
+	UUID        string    `pg:"uuid,unique,pk" json:"uuid"`
 	Name        string    `pg:"name" json:"name" validate:"required"`
 	Icon        string    `pg:"icon" json:"icon" validate:"required"`
 	Description string    `pg:"description" json:"description"`

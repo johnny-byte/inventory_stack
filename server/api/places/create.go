@@ -1,7 +1,6 @@
 package places
 
 import (
-	"fmt"
 	"migration_server/db/models"
 	"net/http"
 	"time"
@@ -18,7 +17,6 @@ func Create(conn *pg.DB) func(ctx echo.Context) error {
 		if err := ctx.Bind(item); err != nil {
 			return ctx.JSON(http.StatusBadRequest, struct{ Error string }{err.Error()})
 		}
-		fmt.Println(item.ID)
 		item.CreateAt = time.Now()
 		item.UpgradeAt = time.Now()
 		var err error

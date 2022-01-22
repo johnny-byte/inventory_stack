@@ -7,14 +7,13 @@ import (
 )
 
 type Migration struct {
-	ID           int       `pg:"id,pk" json:"id"`
 	CreateAt     time.Time `pg:"create_at" json:"create_at"`
 	UpgradeAt    time.Time `pg:"upgrade_at" json:"upgrade_at"`
 	DeleteAt     time.Time `pg:"delete_at" json:"delete_at"`
 	ReturnedDate time.Time `pg:"returned_date" json:"returned_date"`
-	UUID         string    `pg:"uuid,unique" json:"uuid"`
-	Item         Item      `pg:"item,join_fk:id" json:"item"`
-	From         Place     `pg:"from,join_fk:id" json:"from"`
+	UUID         string    `pg:"uuid,unique,pk" json:"uuid"`
+	Item         Item      `pg:"item,join_fk:uuid" json:"item"`
+	From         Place     `pg:"from,join_fk:uuid" json:"from"`
 	To           Place     `pg:"to,join_fk:id" json:"to"`
 }
 
