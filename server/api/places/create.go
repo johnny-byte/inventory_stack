@@ -1,11 +1,12 @@
 package places
 
 import (
+	"fmt"
 	"migration_server/db/models"
 	"net/http"
 	"time"
 
-	"github.com/go-pg/pg/v9"
+	"github.com/go-pg/pg/v10"
 	"github.com/labstack/echo/v4"
 	uuid "github.com/satori/go.uuid"
 )
@@ -17,12 +18,12 @@ func Create(conn *pg.DB) func(ctx echo.Context) error {
 		if err := ctx.Bind(item); err != nil {
 			return ctx.JSON(http.StatusBadRequest, struct{ Error string }{err.Error()})
 		}
-
+		fmt.Println(item.ID)
 		item.CreateAt = time.Now()
 		item.UpgradeAt = time.Now()
 		var err error
 		item.UUID = uuid.Must(uuid.NewV4(), err).String()
-		if err != nil{
+		if err != nil {
 			return err
 		}
 		if err := item.CreatePlace(conn); err != nil {

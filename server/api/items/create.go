@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/go-pg/pg/v9"
+	"github.com/go-pg/pg/v10"
 	"github.com/gookit/validate"
 	"github.com/labstack/echo/v4"
 	uuid "github.com/satori/go.uuid"
@@ -16,9 +16,9 @@ import (
 func Create(conn *pg.DB) func(ctx echo.Context) error {
 	return func(ctx echo.Context) error {
 		item := &models.Item{}
-		 defaultPlace := &models.Place{}
+		defaultPlace := &models.Place{}
 		defaultPlace.ID = -1
-		defaultPlace, _ = defaultPlace.GetDefault(conn);
+		defaultPlace, _ = defaultPlace.GetDefault(conn)
 		fmt.Println(defaultPlace)
 
 		if err := ctx.Bind(item); err != nil {
@@ -35,7 +35,7 @@ func Create(conn *pg.DB) func(ctx echo.Context) error {
 			}
 			var err error
 			item.UUID = uuid.Must(uuid.NewV4(), err).String()
-			if err != nil{
+			if err != nil {
 				return err
 			}
 			if err := item.CreateItem(conn); err != nil {

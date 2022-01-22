@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"github.com/go-pg/pg/v9"
+	"github.com/go-pg/pg/v10"
 )
 
 type ItemType struct {
@@ -18,7 +18,7 @@ type ItemType struct {
 }
 
 func (itm *ItemType) CreateItem(conn *pg.DB) error {
-	if err := conn.Insert(itm); err != nil {
+	if _, err := conn.Model(itm).Insert(itm); err != nil {
 		return err
 	}
 	return nil

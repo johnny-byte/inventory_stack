@@ -4,7 +4,7 @@ import (
 	"migration_server/db/models"
 	"net/http"
 
-	"github.com/go-pg/pg/v9"
+	"github.com/go-pg/pg/v10"
 	"github.com/labstack/echo/v4"
 )
 
@@ -13,7 +13,6 @@ func FindLikeInternalNumber(conn *pg.DB) func(ctx echo.Context) error {
 	return func(ctx echo.Context) error {
 		item := &models.Item{}
 		item.InternalNumber = ctx.Param("internal_number")
-
 
 		items, err := item.FindLikeInternalNumber(conn)
 		if err != nil {

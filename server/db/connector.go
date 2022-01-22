@@ -1,10 +1,10 @@
-  
 package db
 
 import (
-	"github.com/go-pg/pg/v9"
 	"log"
 	"os"
+
+	"github.com/go-pg/pg/v10"
 )
 
 //Connect to database

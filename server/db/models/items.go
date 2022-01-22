@@ -4,7 +4,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/go-pg/pg/v9"
+	"github.com/go-pg/pg/v10"
 )
 
 type Item struct {
@@ -14,18 +14,18 @@ type Item struct {
 	DeleteAt       time.Time `pg:"delete_at" json:"delete_at"`
 	UUID           string    `pg:"uuid,unique" json:"uuid"`
 	SerialNumber   string    `pg:"serial_number" json:"serial_number"`
-	RegNumber   string    `pg:"reg_number" json:"reg_number"`
+	RegNumber      string    `pg:"reg_number" json:"reg_number"`
 	InternalNumber string    `pg:"internal_number,unique" json:"internal_number"`
 	Name           string    `pg:"name" json:"name" validate:"required"`
 	Description    string    `pg:"description" json:"description"`
 	Type           ItemType  `pg:"type,join_fk:id" json:"type"`
-	Date           string  `pg:"date" json:"date"`
-	RootPlace      Place    `pg:"root_place,join_fk:id" json:"root_place"`
-	CurrentPlace   Place    `pg:"current_place,join_fk:id" json:"current_place"`
+	Date           string    `pg:"date" json:"date"`
+	RootPlace      Place     `pg:"root_place,join_fk:id" json:"root_place"`
+	CurrentPlace   Place     `pg:"current_place,join_fk:id" json:"current_place"`
 }
 
 func (itm *Item) CreateItem(conn *pg.DB) error {
-	if err := conn.Insert(itm); err != nil {
+	if _, err := conn.Model(itm).Insert(itm); err != nil {
 		return err
 	}
 	return nil

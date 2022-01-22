@@ -4,7 +4,7 @@ import (
 	"migration_server/db/models"
 	"net/http"
 
-	"github.com/go-pg/pg/v9"
+	"github.com/go-pg/pg/v10"
 	"github.com/labstack/echo/v4"
 )
 
@@ -15,7 +15,6 @@ func GetAllItems(conn *pg.DB) func(ctx echo.Context) error {
 		if err := ctx.Bind(item); err != nil {
 			return ctx.JSON(http.StatusBadRequest, struct{ Error string }{err.Error()})
 		}
-
 
 		items, err := item.GetAllItems(conn)
 		if err != nil {

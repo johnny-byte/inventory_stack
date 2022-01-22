@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/go-pg/pg/v9"
+	"github.com/go-pg/pg/v10"
 	"github.com/labstack/echo/v4"
 	uuid "github.com/satori/go.uuid"
 )
@@ -22,7 +22,7 @@ func Create(conn *pg.DB) func(ctx echo.Context) error {
 		item.UpgradeAt = time.Now()
 		var err error
 		item.UUID = uuid.Must(uuid.NewV4(), err).String()
-		if err != nil{
+		if err != nil {
 			return err
 		}
 		if err := item.CreateMigration(conn); err != nil {
@@ -34,7 +34,7 @@ func Create(conn *pg.DB) func(ctx echo.Context) error {
 		imt.UUID = item.Item.UUID
 		imt.CurrentPlace = item.To
 		imt.UpdateCurrentPlace(conn)
-		
+
 		return ctx.JSON(http.StatusCreated, item)
 	}
 }

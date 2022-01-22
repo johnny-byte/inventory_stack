@@ -4,22 +4,21 @@ import (
 	"strings"
 	"time"
 
-	"github.com/go-pg/pg/v9"
+	"github.com/go-pg/pg/v10"
 )
 
-
 type Place struct {
-	ID              int       `pg:"id,pk" json:"id"`
-	CreateAt        time.Time `pg:"create_at" json:"create_at"`
-	UpgradeAt       time.Time `pg:"upgrade_at" json:"upgrade_at"`
-	DeleteAt        time.Time `pg:"delete_at" json:"delete_at"`
-	UUID            string    `pg:"uuid,unique" json:"uuid"`
-	Name            string    `pg:"name" json:"name"`
-	Description             string    `pg:"description" json:"description"`
+	ID          int       `pg:"id,pk" json:"id"`
+	CreateAt    time.Time `pg:"create_at" json:"create_at"`
+	UpgradeAt   time.Time `pg:"upgrade_at" json:"upgrade_at"`
+	DeleteAt    time.Time `pg:"delete_at" json:"delete_at"`
+	UUID        string    `pg:"uuid,unique" json:"uuid"`
+	Name        string    `pg:"name" json:"name"`
+	Description string    `pg:"description" json:"description"`
 }
 
 func (itm *Place) CreatePlace(conn *pg.DB) error {
-	if err := conn.Insert(itm); err != nil {
+	if _, err := conn.Model(itm).Insert(itm) ; err != nil {
 		return err
 	}
 	return nil
@@ -33,7 +32,6 @@ func (itm *Place) GetDefault(conn *pg.DB) (*Place, error) {
 	}
 	return place, nil
 }
-
 
 func (itm *Place) GetAllPlaces(conn *pg.DB) (*[]Place, error) {
 	places := &[]Place{}
@@ -59,11 +57,11 @@ func (itm *Place) FindLikeName(conn *pg.DB) (*[]Place, error) {
 func (pls *Place) Update(conn *pg.DB) error {
 	pls.UpgradeAt = time.Now()
 	_, err := conn.Model(pls).
-	Set("name = ?name").
-	Set("description = ?description").
-	Set("upgrade_at = ?upgrade_at").
-	Where("uuid = ?0", pls.UUID).
-	Update()
+		Set("name = ?name").
+		Set("description = ?description").
+		Set("upgrade_at = ?upgrade_at").
+		Where("uuid = ?0", pls.UUID).
+		Update()
 	if err != nil {
 		return err
 	}
