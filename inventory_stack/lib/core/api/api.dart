@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:inventory_stack/core/models/item.dart';
@@ -30,7 +28,7 @@ abstract class ApiClient {
   @GET("/place/all")
   Future<List<PlaceData>> places();
 
-  @GET("/place/{like}/find")
+  @GET("/place/name/{like}/find")
   Future<List<PlaceData>> placeFindLike(@Path("like") String like);
 
 
