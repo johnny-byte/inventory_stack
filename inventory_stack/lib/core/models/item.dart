@@ -6,7 +6,6 @@ part 'item.g.dart';
 
 @JsonSerializable()
 class ItemData {
-  final int id;
   @JsonKey(name: "create_at")
   final String createAt;
   @JsonKey(name: "upgrade_at")
@@ -29,7 +28,7 @@ class ItemData {
   @JsonKey(name: "current_place")
   final PlaceData currentPlace;
 
-  ItemData(this.id, this.createAt, this.upgradeAt, this.deleteAt, this.uuid, this.serialNumber, this.regNumber, this.internalNumber, this.name, this.description, this.type, this.date, this.rootPlace, this.currentPlace);
+  ItemData(this.createAt, this.upgradeAt, this.deleteAt, this.uuid, this.serialNumber, this.regNumber, this.internalNumber, this.name, this.description, this.type, this.date, this.rootPlace, this.currentPlace);
 
   factory ItemData.fromJson(Map<String, dynamic> json) => _$ItemDataFromJson(json);
   Map<String, dynamic> toJson() => _$ItemDataToJson(this);

@@ -4,7 +4,6 @@ part 'item_type.g.dart';
 
 @JsonSerializable()
 class ItemTypeData {
-  final int id;
   @JsonKey(name: "create_at")
   final DateTime createAt;
   @JsonKey(name: "upgrade_at")
@@ -16,7 +15,7 @@ class ItemTypeData {
   final String? icon;
   final String? description;
 
-  ItemTypeData(this.id, this.createAt, this.upgradeAt, this.deleteAt, this.uuid, this.name, this.icon, this.description);
+  ItemTypeData(this.createAt, this.upgradeAt, this.deleteAt, this.uuid, this.name, this.icon, this.description);
 
   factory ItemTypeData.fromJson(Map<String, dynamic> json) => _$ItemTypeDataFromJson(json);
 

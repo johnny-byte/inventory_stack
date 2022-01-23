@@ -7,7 +7,6 @@ part of 'item.dart';
 // **************************************************************************
 
 ItemData _$ItemDataFromJson(Map<String, dynamic> json) => ItemData(
-      json['id'] as int,
       json['create_at'] as String,
       json['upgrade_at'] as String,
       json['delete_at'] as String,
@@ -24,7 +23,6 @@ ItemData _$ItemDataFromJson(Map<String, dynamic> json) => ItemData(
     );
 
 Map<String, dynamic> _$ItemDataToJson(ItemData instance) => <String, dynamic>{
-      'id': instance.id,
       'create_at': instance.createAt,
       'upgrade_at': instance.upgradeAt,
       'delete_at': instance.deleteAt,

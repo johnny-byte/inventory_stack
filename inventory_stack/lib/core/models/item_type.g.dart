@@ -7,7 +7,6 @@ part of 'item_type.dart';
 // **************************************************************************
 
 ItemTypeData _$ItemTypeDataFromJson(Map<String, dynamic> json) => ItemTypeData(
-      json['id'] as int,
       DateTime.parse(json['create_at'] as String),
       DateTime.parse(json['upgrade_at'] as String),
       json['delete_at'] == null
@@ -21,7 +20,6 @@ ItemTypeData _$ItemTypeDataFromJson(Map<String, dynamic> json) => ItemTypeData(
 
 Map<String, dynamic> _$ItemTypeDataToJson(ItemTypeData instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'create_at': instance.createAt.toIso8601String(),
       'upgrade_at': instance.upgradeAt.toIso8601String(),
       'delete_at': instance.deleteAt?.toIso8601String(),

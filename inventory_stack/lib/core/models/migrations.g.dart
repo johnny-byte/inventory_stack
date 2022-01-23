@@ -8,7 +8,6 @@ part of 'migrations.dart';
 
 MigrationsData _$MigrationsDataFromJson(Map<String, dynamic> json) =>
     MigrationsData(
-      json['id'] as int,
       DateTime.parse(json['create_at'] as String),
       DateTime.parse(json['upgrade_at'] as String),
       json['delete_at'] == null
@@ -22,7 +21,6 @@ MigrationsData _$MigrationsDataFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$MigrationsDataToJson(MigrationsData instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'create_at': instance.createAt.toIso8601String(),
       'upgrade_at': instance.upgradeAt.toIso8601String(),
       'delete_at': instance.deleteAt?.toIso8601String(),

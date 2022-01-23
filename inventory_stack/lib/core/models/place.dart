@@ -4,7 +4,6 @@ part 'place.g.dart';
 
 @JsonSerializable()
 class PlaceData {
-  final int? id;
   @JsonKey(name: "create_at")
   final DateTime? createAt;
   @JsonKey(name: "upgrade_at")
@@ -15,7 +14,7 @@ class PlaceData {
   final String name;
   final String? description;
 
-  PlaceData({this.id, this.createAt, this.upgradeAt, this.deleteAt, this.uuid, required this.name, this.description});
+  PlaceData({this.createAt, this.upgradeAt, this.deleteAt, this.uuid, required this.name, this.description});
 
   factory PlaceData.fromJson(Map<String, dynamic> json) => _$PlaceDataFromJson(json);
   Map<String, dynamic> toJson() => _$PlaceDataToJson(this);

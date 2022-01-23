@@ -7,7 +7,6 @@ part of 'place.dart';
 // **************************************************************************
 
 PlaceData _$PlaceDataFromJson(Map<String, dynamic> json) => PlaceData(
-      id: json['id'] as int?,
       createAt: json['create_at'] == null
           ? null
           : DateTime.parse(json['create_at'] as String),
@@ -23,7 +22,6 @@ PlaceData _$PlaceDataFromJson(Map<String, dynamic> json) => PlaceData(
     );
 
 Map<String, dynamic> _$PlaceDataToJson(PlaceData instance) => <String, dynamic>{
-      'id': instance.id,
       'create_at': instance.createAt?.toIso8601String(),
       'upgrade_at': instance.upgradeAt?.toIso8601String(),
       'delete_at': instance.deleteAt?.toIso8601String(),
