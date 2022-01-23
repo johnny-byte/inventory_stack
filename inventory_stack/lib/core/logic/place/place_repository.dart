@@ -13,7 +13,6 @@ class PlaceRepository{
 
   FutureOr<void> getPlaces() async {
     _places = await client.places();
-    
   }
 
   FutureOr<void> createPlace(PlaceData place) async {

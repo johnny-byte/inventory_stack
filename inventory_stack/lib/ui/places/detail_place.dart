@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:inventory_stack/core/logic/place/place_bloc.dart';
+import 'package:inventory_stack/core/models/item.dart';
 import 'package:inventory_stack/core/models/place.dart';
 import 'package:inventory_stack/ui/items/item_list_element.dart';
 import 'package:inventory_stack/ui/places/create_place.dart';
 import 'package:inventory_stack/utils/icons.dart';
+import 'package:provider/src/provider.dart';
 
 class PlaceDetailPage extends StatefulWidget {
   final String previus;
@@ -15,13 +18,14 @@ class PlaceDetailPage extends StatefulWidget {
 }
 
 class _PlaceDetailPageState extends State<PlaceDetailPage> {
-  List<String> itemsArray = ["123"];
   final String title = "Информация";
-  bool isLoading = false;
+  bool isLoading = false; // TODO imp load 
+  late List<ItemData> items;
 
   @override
   void initState() {
     super.initState();
+    items = context.read<PlaceBloc>().getAllItemsInPlace(widget.place.uuid!);
   } 
 
   @override
@@ -51,25 +55,24 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
                 ),
                 const SizedBox(height: 20),
                 if (isLoading) const Center(child: CupertinoActivityIndicator(),),
-                if(itemsArray.isEmpty && !isLoading) Expanded(child: Column(
+                if(items.isEmpty && !isLoading) Expanded(child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     MigrationIcons.empty,
                     Center(child: Text("Нет элементов", style: CupertinoTheme.of(context).textTheme.tabLabelTextStyle,)),
                   ],
                 )),
-                // TODO send all devices in the place
-                // Expanded(
-                //       child: ListView.builder(
-                //         itemCount: itemsArray.length,
-                //         itemBuilder: (context, index){
-                //           return const ItemsListElement();
-                //         },
-                // ))
+
+                Expanded(
+                      child: ListView.builder(
+                        itemCount: items.length,
+                        itemBuilder: (context, index){
+                          return ItemsListElement(data: items[index],);
+                        },
+                ))
               ],
             ),
-          ),
-                  ),
+          )),
         ));
   }
 }
