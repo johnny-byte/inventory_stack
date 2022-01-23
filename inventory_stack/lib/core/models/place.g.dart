@@ -7,21 +7,25 @@ part of 'place.dart';
 // **************************************************************************
 
 PlaceData _$PlaceDataFromJson(Map<String, dynamic> json) => PlaceData(
-      json['id'] as int,
-      DateTime.parse(json['create_at'] as String),
-      DateTime.parse(json['upgrade_at'] as String),
-      json['delete_at'] == null
+      id: json['id'] as int?,
+      createAt: json['create_at'] == null
+          ? null
+          : DateTime.parse(json['create_at'] as String),
+      upgradeAt: json['upgrade_at'] == null
+          ? null
+          : DateTime.parse(json['upgrade_at'] as String),
+      deleteAt: json['delete_at'] == null
           ? null
           : DateTime.parse(json['delete_at'] as String),
-      json['uuid'] as String,
-      json['name'] as String,
-      json['description'] as String?,
+      uuid: json['uuid'] as String?,
+      name: json['name'] as String,
+      description: json['description'] as String?,
     );
 
 Map<String, dynamic> _$PlaceDataToJson(PlaceData instance) => <String, dynamic>{
       'id': instance.id,
-      'create_at': instance.createAt.toIso8601String(),
-      'upgrade_at': instance.upgradeAt.toIso8601String(),
+      'create_at': instance.createAt?.toIso8601String(),
+      'upgrade_at': instance.upgradeAt?.toIso8601String(),
       'delete_at': instance.deleteAt?.toIso8601String(),
       'uuid': instance.uuid,
       'name': instance.name,

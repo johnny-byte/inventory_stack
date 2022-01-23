@@ -1,14 +1,14 @@
-
 import 'package:flutter/cupertino.dart';
+import 'package:inventory_stack/core/models/place.dart';
 import 'package:inventory_stack/ui/items/item_list_element.dart';
 import 'package:inventory_stack/ui/places/create_place.dart';
 import 'package:inventory_stack/utils/icons.dart';
 
 class PlaceDetailPage extends StatefulWidget {
   final String previus;
-  //final PlaceData place;
+  final PlaceData place;
 
-  const PlaceDetailPage({Key? key,required this.previus}) : super(key: key);
+  const PlaceDetailPage({Key? key, required this.previus, required this.place}) : super(key: key);
 
   @override
   _PlaceDetailPageState createState() => _PlaceDetailPageState();
@@ -31,7 +31,7 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
           previousPageTitle: widget.previus,
           middle: Text(title),
           trailing: GestureDetector(child: MigrationIcons.edite, onTap: (){
-            Navigator.of(context).push(CupertinoPageRoute(builder: (contex)=> CreatePlacePage(previousTitle: title)));
+            Navigator.of(context).push(CupertinoPageRoute(builder: (contex)=> CreatePlacePage(previousTitle: title, place: widget.place,))).then((value) => Navigator.of(context).pop());
           },),
         ),
         child: SafeArea(
@@ -42,11 +42,11 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
               children: [
                const SizedBox(height: 15),
                 Text(
-                    "Place name",
+                    widget.place.name,
                     style: CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
                 ),
                 Text(
-                    "description",
+                    widget.place.description ?? "",
                     style: CupertinoTheme.of(context).textTheme.textStyle,
                 ),
                 const SizedBox(height: 20),

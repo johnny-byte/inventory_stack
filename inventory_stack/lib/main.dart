@@ -33,7 +33,7 @@ class AppRunner extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
             theme: themeData,
-            home: const App(),
+            home: App(),
           );
       }),
     );

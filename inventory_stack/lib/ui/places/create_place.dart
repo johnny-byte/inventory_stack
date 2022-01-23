@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:inventory_stack/core/logic/place/place_bloc.dart';
+import 'package:inventory_stack/core/models/place.dart';
+import 'package:provider/src/provider.dart';
 
 class CreatePlacePage extends StatefulWidget {
   final String previousTitle;
-  const CreatePlacePage({Key? key, required this.previousTitle}) : super(key: key);
+  final PlaceData? place;
+  const CreatePlacePage({Key? key, required this.previousTitle, final this.place}) : super(key: key);
 
   @override
   _CreatePlacePageState createState() => _CreatePlacePageState();
@@ -12,11 +16,10 @@ class _CreatePlacePageState extends State<CreatePlacePage> {
   late TextEditingController name;
   late TextEditingController description;
 
-
   @override
   void initState() {
-    name = TextEditingController();
-    description = TextEditingController();
+    name = TextEditingController(text: widget.place?.name);
+    description = TextEditingController(text: widget.place?.description);
     super.initState();
   }
 
@@ -87,20 +90,17 @@ class _CreatePlacePageState extends State<CreatePlacePage> {
                   height: 15,
                 ),
                 CupertinoButton.filled(
-                  child: const Text("Сохранить"),
+                  child: Text(widget.place != null ? "Обновить" : "Сохранить"),
                   onPressed: () async {
-                    // var x;
-                    // if (isEditor) {
-                    //   x = await place.update();
-                    // } else {
-                    //   x = await place.crete();
-                    // }
-                    // if (x.statusCode == 201 || x.statusCode == 200) {
-                    //   Navigator.of(context).pop(context);
-                    // } else {
-                    //   print(x.statusCode);
-                    // }
-                    Navigator.of(context).pop();
+                    PlaceData? placeData = PlaceData(
+                      uuid: widget.place?.uuid,
+                      name: name.text, description: description.text);
+                    if(placeData.uuid!=""){
+                      context.read<PlaceBloc>().add(UpdatePlaceEvent(placeData));
+                    } else{
+                      context.read<PlaceBloc>().add(CreatePlaceEvent(placeData));
+                    }
+                    Navigator.of(context).pop(placeData);
                   },
                 )
               ],
