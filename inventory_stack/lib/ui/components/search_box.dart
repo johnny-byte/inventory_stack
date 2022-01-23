@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_stack/utils/icons.dart';
@@ -11,10 +9,12 @@ enum SearchType{
   likeUuid
 }
 
+typedef OnSearchCallback = void Function(String text);
+
 class SearchBox extends StatefulWidget {
   final TextEditingController controller;
-  final Function? onSearch;
-  final Function? onClear;
+  final OnSearchCallback? onSearch;
+  final VoidCallback? onClear;
   final SearchType type;
   final Function(SearchType value)? onSwitchSearchType;
 
@@ -50,7 +50,7 @@ class _SearchBoxState extends State<SearchBox> {
               placeholder: "Поиск",
               onEditingComplete: (){
                 focus.unfocus();
-                widget.onSearch?.call();
+                widget.onSearch?.call(widget.controller.value.text);
               },
               suffix: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
