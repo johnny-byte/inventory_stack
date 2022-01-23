@@ -9,8 +9,7 @@ part 'item_event.dart';
 part 'item_state.dart';
 
 class ItemBloc extends Bloc<ItemEvent, ItemState> {
-  ItemBloc() : super(ItemInitialState()){
-    repository = ItemRepository();
+  ItemBloc(this.repository) : super(ItemInitialState()){
     on<ItemsGetEvent>(_onGetEvent);
     on<ItemsUpdateEvent>(_onUpdateList);
     on<ItemCreateEvent>(_onCreateEvent);
@@ -19,7 +18,7 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
     on<ItemSearchByUUIDEvent>(_onSearchByUUID);
   }
 
-  late ItemRepository repository;
+  final ItemRepository repository;
 
   FutureOr<void> _onGetEvent(ItemsGetEvent event, Emitter<ItemState> emiter) async  {
     emiter(ItemLoadState());
