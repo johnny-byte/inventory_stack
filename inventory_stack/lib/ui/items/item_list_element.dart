@@ -1,22 +1,19 @@
 import 'package:flutter/cupertino.dart';
+import 'package:inventory_stack/core/models/item.dart';
 import 'package:inventory_stack/ui/items/item_detail.dart';
 import 'package:inventory_stack/ui/migration/migration.dart';
 import 'package:inventory_stack/utils/icons.dart';
 
 class ItemsListElement extends StatefulWidget {
-  const ItemsListElement({Key? key,}) : super(key: key);
+  const ItemsListElement({Key? key, required this.data}) : super(key: key);
+
+  final ItemData data;
 
   @override
   _ItemsListElementState createState() => _ItemsListElementState();
 }
 
 class _ItemsListElementState extends State<ItemsListElement> {
-  
-  getPlaceName(context){
-    // return BlocProvider.of<MainBloc>(context).placeArray.fromUuid(widget.data.currentPlace).name;
-    return "";
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,7 +23,7 @@ class _ItemsListElementState extends State<ItemsListElement> {
           constraints: const BoxConstraints(maxWidth: 600, minWidth: 300),
           child: GestureDetector(
             onTap: (){
-              Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>const ItemDetailPage()));
+              Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ItemDetailPage(data: widget.data,)));
             },
                   child: Container(
               height: 105,
@@ -51,24 +48,25 @@ class _ItemsListElementState extends State<ItemsListElement> {
                                   Row(
                                     children: [
                                       Text(
-                                        "Device name",
+                                        widget.data.name.length > 24 ? widget.data.name.substring(0, 23)+"..." : widget.data.name,
                                         style:  CupertinoTheme.of(context).textTheme.textStyle
                                       ),
                                       const SizedBox(width: 15,),
-                                      //if(widget.data.currentPlace != widget.data.rootPlace) MigrationIcons.alert,
+                                      if(widget.data.currentPlace.uuid != widget.data.rootPlace.uuid) MigrationIcons.alert,
                                     ],
                                   ),
+                                  if(widget.data.description != null)
                                   Text(
-                                    "descripton",
+                                    widget.data.description!.substring(0, widget.data.description!.length > 51 ? 50 : widget.data.description?.length).replaceAll('\n'," / "),
                                     style: CupertinoTheme.of(context).textTheme.tabLabelTextStyle,
                                   ),
                                   const Spacer(),
                                   Text(
-                                    "Гимназия 1 ИНВ №123",
+                                    "Гимназия 1 ИНВ №${widget.data.internalNumber}",
                                     style: CupertinoTheme.of(context).textTheme.tabLabelTextStyle,
                                   ),
                                   Text(
-                                    "Местоположение: " + getPlaceName(context),
+                                    "Местоположение: ${widget.data.currentPlace.name}",
                                     style: CupertinoTheme.of(context).textTheme.tabLabelTextStyle,
                                   ),
                                   const SizedBox(height: 15,)
@@ -83,7 +81,7 @@ class _ItemsListElementState extends State<ItemsListElement> {
                                 child: CupertinoButton(
                                   child: MigrationIcons.right,
                                   onPressed: () {
-                                    Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>const ItemDetailPage()));
+                                    Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ItemDetailPage(data: widget.data,)));
                                   },
                                 )),
                           ),

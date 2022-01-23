@@ -9,16 +9,15 @@ enum SearchType{
   likeUuid
 }
 
-typedef OnSearchCallback = void Function(String text);
+typedef OnSearchCallback = void Function(String text, SearchType type);
 
 class SearchBox extends StatefulWidget {
   final TextEditingController controller;
   final OnSearchCallback? onSearch;
   final VoidCallback? onClear;
   final SearchType type;
-  final Function(SearchType value)? onSwitchSearchType;
 
-  SearchBox({Key? key, this.type= SearchType.likeInternalNumber, TextEditingController? controller,  this.onSearch,  this.onClear,  this.onSwitchSearchType}) : controller = controller ?? TextEditingController(), super(key: key);
+  SearchBox({Key? key, this.type= SearchType.likeInternalNumber, TextEditingController? controller,  this.onSearch,  this.onClear}) : controller = controller ?? TextEditingController(), super(key: key);
 
   @override
   _SearchBoxState createState() => _SearchBoxState();
@@ -50,7 +49,7 @@ class _SearchBoxState extends State<SearchBox> {
               placeholder: "Поиск",
               onEditingComplete: (){
                 focus.unfocus();
-                widget.onSearch?.call(widget.controller.value.text);
+                widget.onSearch?.call(widget.controller.value.text, type);
               },
               suffix: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -92,7 +91,6 @@ class _SearchBoxState extends State<SearchBox> {
                   setState(() {
                     type = v as SearchType; 
                   });
-                  widget.onSwitchSearchType?.call(v as SearchType);
                 }),
         ],
       ),

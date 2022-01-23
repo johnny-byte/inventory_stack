@@ -58,13 +58,14 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
                     Center(child: Text("Нет элементов", style: CupertinoTheme.of(context).textTheme.tabLabelTextStyle,)),
                   ],
                 )),
-                Expanded(
-                      child: ListView.builder(
-                        itemCount: itemsArray.length,
-                        itemBuilder: (context, index){
-                          return const ItemsListElement();
-                        },
-                ))
+                // TODO send all devices in the place
+                // Expanded(
+                //       child: ListView.builder(
+                //         itemCount: itemsArray.length,
+                //         itemBuilder: (context, index){
+                //           return const ItemsListElement();
+                //         },
+                // ))
               ],
             ),
           ),

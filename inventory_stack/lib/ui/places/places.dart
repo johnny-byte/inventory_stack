@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventory_stack/core/logic/place/place_bloc.dart';
 import 'package:inventory_stack/core/models/place.dart';
+import 'package:inventory_stack/ui/components/not_found_elements.dart';
 import 'package:inventory_stack/ui/components/search_box.dart';
 import 'package:inventory_stack/ui/migration/migration.dart';
 import 'package:inventory_stack/ui/places/create_place.dart';
@@ -19,7 +20,6 @@ class _PlacePageState extends State<PlacePage> {
   final String title = "Места";
 
   final Key searchKey = const ValueKey("PlaceSearchBox");
-
   final TextEditingController controller = TextEditingController();
 
   @override
@@ -68,7 +68,7 @@ class _PlacePageState extends State<PlacePage> {
                           onClear: (){
                             context.read<PlaceBloc>().add(UpdatePlacesListEvent());
                           },
-                          onSearch: (v){
+                          onSearch: (v, _){
                             context.read<PlaceBloc>().add(SearchPlaceByName(v));
                           },
                           )
@@ -92,26 +92,7 @@ class _PlacePageState extends State<PlacePage> {
           // //SHOW FINDED STATE
           if (state is PlacesShowSearchedState)
             state.data.isEmpty
-                ? SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        Center(
-                          child: ConstrainedBox(
-                              constraints: const BoxConstraints(
-                                  maxWidth: 600, minWidth: 300),
-                              child: Column(
-                                children: [
-                                  MigrationIcons.search,
-                                  Text("Ничего не найдено",
-                                      style: CupertinoTheme.of(context)
-                                          .textTheme
-                                          .tabLabelTextStyle)
-                                ],
-                              )),
-                        )
-                      ],
-                    ),
-                  )
+                ? const NotFountElements()
                 : PlaceItemList(array: state.data)
         ],
       );

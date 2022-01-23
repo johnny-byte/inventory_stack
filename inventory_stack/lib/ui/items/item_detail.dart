@@ -1,32 +1,20 @@
 
 import 'package:flutter/cupertino.dart';
+import 'package:inventory_stack/core/models/item.dart';
 import 'package:inventory_stack/ui/items/create_item.dart';
 import 'package:inventory_stack/ui/migration/migration.dart';
 import 'package:inventory_stack/utils/icons.dart';
 
 class ItemDetailPage extends StatefulWidget {
-  const ItemDetailPage({Key? key,}) : super(key: key);
+  const ItemDetailPage({Key? key, required this.data}) : super(key: key);
+
+  final ItemData data;
 
   @override
   _ItemDetailPageState createState() => _ItemDetailPageState();
 }
 
 class _ItemDetailPageState extends State<ItemDetailPage> {
-  getRootPlaceName(context){
-    // if (widget.data.rootPlace.length != 0){
-    //   return BlocProvider.of<MainBloc>(context).placeArray.fromUuid(widget.data.rootPlace).name;
-    // }
-    return "no parsed name";
-  }
-
-  getCurrentPlaceName(context){
-    // if (widget.data.currentPlace.length != 0){
-    //   return BlocProvider.of<MainBloc>(context).placeArray.fromUuid(widget.data.currentPlace).name;
-    // }
-    return "no parsed name";
-  }
-  bool isMigration = true;
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -60,19 +48,19 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                         child: Column(
                           children: [
                             Text(
-                              "NAME",
+                              widget.data.name,
                               style: CupertinoTheme.of(context)
                                   .textTheme
                                   .navLargeTitleTextStyle,
                             ),
-                            Text("DESCR",
+                            Text(widget.data.description ?? "",
                                 style:
                                     CupertinoTheme.of(context).textTheme.textStyle),
-                            Text("Гим ИНВ№ 123",
+                            Text("Гим ИНВ№${widget.data.internalNumber}",
                                 style: CupertinoTheme.of(context)
                                     .textTheme
                                     .tabLabelTextStyle),
-                            Text("SN: 123",
+                            Text("SN: ${widget.data.serialNumber}",
                                 style: CupertinoTheme.of(context)
                                     .textTheme
                                     .tabLabelTextStyle),
@@ -86,8 +74,8 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                               context: context,
                               builder: (context) => CupertinoAlertDialog(
                                     title: const Text("UUID"),
-                                    content: const Center(
-                                        child: Text("uuid-uuid-uuid")),
+                                    content: Center(
+                                        child: Text(widget.data.uuid)),
                                     actions: [
                                       CupertinoButton(
                                           child: const Text("OK"),
@@ -108,7 +96,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                         children: [
                             MigrationIcons.home,
                           Text(
-                            getRootPlaceName(context),
+                            widget.data.rootPlace.name,
                             style: CupertinoTheme.of(context)
                                 .textTheme
                                 .tabLabelTextStyle,
@@ -119,7 +107,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                         children: [
                           MigrationIcons.location,
                           Text(
-                            getCurrentPlaceName(context),
+                            widget.data.currentPlace.name,
                             style: CupertinoTheme.of(context)
                                 .textTheme
                                 .tabLabelTextStyle,
@@ -145,7 +133,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                     child: ListView.builder(
                       itemCount: 3,
                       itemBuilder: (context, index){
-                        if (isMigration){
+                        if (widget.data.currentPlace.uuid != widget.data.rootPlace.uuid){
                           return const MigrationListElement(title: false,);
                         } else{
                           return Container();
