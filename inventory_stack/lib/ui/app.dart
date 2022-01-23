@@ -1,26 +1,36 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:inventory_stack/ui/items/items.dart';
 import 'package:inventory_stack/ui/migration/migration.dart';
 import 'package:inventory_stack/ui/places/places.dart';
 import 'package:inventory_stack/ui/settings/settings.dart';
 import 'package:inventory_stack/utils/icons.dart';
+import 'package:provider/src/provider.dart';
 
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+class App extends StatefulWidget {
+  App({Key? key}) : super(key: key);
 
-  Widget getBody(index){
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  final Key migrationPageKey =  GlobalKey();
+  final Key itemsPageKey =  GlobalKey();
+  final Key placePageKey =  GlobalKey();
+  final Key settingsPageKey =  GlobalKey();
+
+  Widget getBody(int index, BuildContext context){
     switch (index) {
       case 0:
-        return MigrationsPage();
+        return MigrationsPage(key: migrationPageKey,);
       case 1:
-        return const ItemsPage();
+        return ItemsPage(key: itemsPageKey,);
       case 2:
-        return PlacePage();
+        return PlacePage(key: placePageKey,);
       case 3:
-        return const SettingsPage();
+        return SettingsPage(key: settingsPageKey,);
       default:
-        return MigrationsPage();
+        return MigrationsPage(key: migrationPageKey);
     }
   }
 
@@ -52,7 +62,7 @@ class App extends StatelessWidget {
             tabBuilder: (BuildContext context, int index) {
               return CupertinoTabView(
                 builder: (BuildContext context) {
-                  return getBody(index);
+                  return getBody(index, context);
                 },
               );
             },
