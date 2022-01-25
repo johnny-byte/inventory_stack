@@ -8,19 +8,23 @@ import (
 )
 
 type Item struct {
-	UUID           string    `pg:"uuid,unique,pk" json:"uuid"`
-	CreateAt       time.Time `pg:"create_at" json:"create_at"`
-	UpgradeAt      time.Time `pg:"upgrade_at" json:"upgrade_at"`
-	DeleteAt       time.Time `pg:"delete_at" json:"delete_at"`
-	SerialNumber   string    `pg:"serial_number" json:"serial_number"`
-	RegNumber      string    `pg:"reg_number" json:"reg_number"`
-	InternalNumber string    `pg:"internal_number,unique" json:"internal_number"`
-	Name           string    `pg:"name" json:"name" validate:"required"`
-	Description    string    `pg:"description" json:"description"`
-	Type           ItemType  `pg:"type,join_fk:uuid" json:"type"`
-	Date           string    `pg:"date" json:"date"`
-	RootPlace      Place     `pg:"root_place,join_fk:id" json:"root_place"`
-	CurrentPlace   Place     `pg:"current_place,join_fk:id" json:"current_place"`
+	UUID             string    `pg:"uuid,unique,pk" json:"uuid"`
+	CreateAt         time.Time `pg:"create_at" json:"create_at"`
+	UpgradeAt        time.Time `pg:"upgrade_at" json:"upgrade_at"`
+	DeleteAt         time.Time `pg:"delete_at" json:"delete_at"`
+	SerialNumber     string    `pg:"serial_number" json:"serial_number"`
+	RegNumber        string    `pg:"reg_number" json:"reg_number"`
+	InternalNumber   string    `pg:"internal_number,unique" json:"internal_number"`
+	Name             string    `pg:"name" json:"name" validate:"required"`
+	Description      string    `pg:"description" json:"description"`
+	TypeUUID         string    `pg:"type_uuid" json:"type_uuid"`
+	Type             *ItemType `pg:"rel:has-one" json:"type"`
+	Date             string    `pg:"date" json:"date"`
+	Count            int       `pg:"count" json:"count"`
+	RootPlaceUUID    string    `pg:"root_place_uuid" json:"root_place_uuid"`
+	CurrentPlaceUUID string    `pg:"current_place_uuid" json:"current_place_uuid"`
+	RootPlace        *Place    `pg:"rel:has-one" json:"root_place"`
+	CurrentPlace     *Place    `pg:"rel:has-one" json:"current_place"`
 }
 
 func (itm *Item) CreateItem(conn *pg.DB) error {
@@ -35,6 +39,17 @@ func (itm *Item) GetAllItems(conn *pg.DB) (*[]Item, error) {
 	if err := conn.Model(items).
 		Select(); err != nil {
 		return nil, err
+	}
+	for i, item := range *items {
+		placeRoot := &Place{}
+		placeCurrent := &Place{}
+		itemType := &ItemType{}
+		conn.Model(itemType).Where("uuid = ?0", item.TypeUUID).Select()
+		conn.Model(placeRoot).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		conn.Model(placeCurrent).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		(*items)[i].Type = itemType
+		(*items)[i].RootPlace = placeRoot
+		(*items)[i].RootPlace = placeCurrent
 	}
 	return items, nil
 }

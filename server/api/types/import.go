@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/go-pg/pg/v10"
-	"github.com/gookit/validate"
 	"github.com/labstack/echo/v4"
 	uuid "github.com/satori/go.uuid"
 )
@@ -14,31 +13,28 @@ import (
 //Create fun
 func Import(conn *pg.DB) func(ctx echo.Context) error {
 	return func(ctx echo.Context) error {
-		items := &models.ItemsTypeSync{}
+		items := &[]models.ItemType{}
 		if err := ctx.Bind(items); err != nil {
 			return ctx.JSON(http.StatusBadRequest, struct{ Error string }{err.Error()})
 		}
 
-		v := validate.Struct(items)
-		if v.Validate() {
-			for _, item := range items.Types {
-				item.CreateAt = time.Now()
-				item.UpgradeAt = time.Now()
-				var err error
-				item.UUID = uuid.Must(uuid.NewV4(), err).String()
-				if err != nil {
-					return err
-				}
-				if err := item.CreateItem(conn); err != nil {
-					return ctx.JSON(http.StatusBadRequest,
-						struct{ Error string }{err.Error()})
-				}
+		for _, item := range *items {
+			item.CreateAt = time.Now()
+			item.UpgradeAt = time.Now()
+			var err error
+			item.UUID = uuid.Must(uuid.NewV4(), err).String()
+			if err != nil {
+				return err
 			}
-
-		} else {
-			return ctx.JSON(http.StatusBadRequest, v.Errors.All())
+			if err := item.CreateItem(conn); err != nil {
+				return ctx.JSON(http.StatusBadRequest,
+					struct{ Error string }{err.Error()})
+			}
 		}
 
-		return ctx.JSON(http.StatusCreated, items)
+		item := models.ItemType{}
+		itemsResp, _ :=item.GetAllItems(conn)
+		
+		return ctx.JSON(http.StatusCreated, itemsResp)
 	}
 }

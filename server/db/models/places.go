@@ -8,16 +8,18 @@ import (
 )
 
 type Place struct {
+	UUID        string    `pg:"uuid,unique,pk" json:"uuid"`
 	CreateAt    time.Time `pg:"create_at" json:"create_at"`
 	UpgradeAt   time.Time `pg:"upgrade_at" json:"upgrade_at"`
 	DeleteAt    time.Time `pg:"delete_at" json:"delete_at"`
-	UUID        string    `pg:"uuid,unique,pk" json:"uuid"`
 	Name        string    `pg:"name" json:"name"`
 	Description string    `pg:"description" json:"description"`
+	ItemsUUID   []string  `pg:"items_uuid" json:"items_uuid"`
+	//Items       []*Item   `pg:"rel:has-many" json:"items"`
 }
 
 func (itm *Place) CreatePlace(conn *pg.DB) error {
-	if _, err := conn.Model(itm).Insert(itm) ; err != nil {
+	if _, err := conn.Model(itm).Insert(itm); err != nil {
 		return err
 	}
 	return nil
@@ -25,7 +27,7 @@ func (itm *Place) CreatePlace(conn *pg.DB) error {
 
 func (itm *Place) GetDefault(conn *pg.DB) (*Place, error) {
 	place := &Place{}
-	if err := conn.Model(place).First(); err != nil {
+	if err := conn.Model(place).Where("name = ?", "Не определено").Select(); err != nil {
 		return nil, err
 	}
 	return place, nil

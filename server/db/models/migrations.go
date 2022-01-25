@@ -7,14 +7,17 @@ import (
 )
 
 type Migration struct {
+	UUID         string    `pg:"uuid,unique,pk" json:"uuid"`
 	CreateAt     time.Time `pg:"create_at" json:"create_at"`
 	UpgradeAt    time.Time `pg:"upgrade_at" json:"upgrade_at"`
 	DeleteAt     time.Time `pg:"delete_at" json:"delete_at"`
 	ReturnedDate time.Time `pg:"returned_date" json:"returned_date"`
-	UUID         string    `pg:"uuid,unique,pk" json:"uuid"`
-	Item         Item      `pg:"item,join_fk:uuid" json:"item"`
-	From         Place     `pg:"from,join_fk:uuid" json:"from"`
-	To           Place     `pg:"to,join_fk:id" json:"to"`
+	ItemUUID     string    `pg:"item_uuid" json:"item_uuid"`
+	FromUUID     string    `pg:"from_uuid" json:"from_uuid"`
+	ToUUID       string    `pg:"to_uuid" json:"to_uuid"`
+	Item         *Item     `pg:"rel:has-one" json:"item"`
+	From         *Place    `pg:"rel:has-one" json:"from"`
+	To           *Place    `pg:"rel:has-one" json:"to"`
 }
 
 func (itm *Migration) CreateMigration(conn *pg.DB) error {
