@@ -1,3 +1,6 @@
 *.exe
 *.env
 *.json
+
+# folders
+__pycache__/
