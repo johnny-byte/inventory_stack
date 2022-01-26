@@ -14,9 +14,18 @@ MigrationsData _$MigrationsDataFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['delete_at'] as String),
       json['uuid'] as String,
-      ItemData.fromJson(json['item'] as Map<String, dynamic>),
-      PlaceData.fromJson(json['from'] as Map<String, dynamic>),
-      PlaceData.fromJson(json['to'] as Map<String, dynamic>),
+      json['item_uuid'] as String,
+      json['from_uuid'] as String,
+      json['to_uuid'] as String,
+      json['item'] == null
+          ? null
+          : ItemData.fromJson(json['item'] as Map<String, dynamic>),
+      json['from'] == null
+          ? null
+          : PlaceData.fromJson(json['from'] as Map<String, dynamic>),
+      json['to'] == null
+          ? null
+          : PlaceData.fromJson(json['to'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MigrationsDataToJson(MigrationsData instance) =>
@@ -25,6 +34,9 @@ Map<String, dynamic> _$MigrationsDataToJson(MigrationsData instance) =>
       'upgrade_at': instance.upgradeAt.toIso8601String(),
       'delete_at': instance.deleteAt?.toIso8601String(),
       'uuid': instance.uuid,
+      'item_uuid': instance.itemUuid,
+      'from_uuid': instance.fromUuid,
+      'to_uuid': instance.toUuid,
       'item': instance.item,
       'from': instance.from,
       'to': instance.to,

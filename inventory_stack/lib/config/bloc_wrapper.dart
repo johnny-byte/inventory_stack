@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inventory_stack/core/logic/item/item_bloc.dart';
 import 'package:inventory_stack/core/logic/item/item_repository.dart';
+import 'package:inventory_stack/core/logic/migration/migration_bloc.dart';
+import 'package:inventory_stack/core/logic/migration/migration_repository.dart';
 import 'package:inventory_stack/core/logic/place/place_bloc.dart';
 import 'package:inventory_stack/core/logic/place/place_repository.dart';
 import 'package:inventory_stack/core/logic/theme/theme_cubit.dart';
@@ -13,6 +16,7 @@ class BlocWrapper extends StatelessWidget {
 
   final PlaceRepository placeRepository = PlaceRepository();
   final ItemRepository itemRepository = ItemRepository();
+  final MigrationRepository migrationRepository = MigrationRepository();
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -20,6 +24,7 @@ class BlocWrapper extends StatelessWidget {
         BlocProvider(lazy: true, create: (_)=>ThemeCubit()),
         BlocProvider(lazy: true, create: (_)=>PlaceBloc(placeRepository, itemRepository)),
         BlocProvider(lazy: true, create: (_)=>ItemBloc(itemRepository)),
+        BlocProvider(lazy: true, create: (_)=>MigrationBloc(migrationRepository)),
       ],
       child: child!,
     );

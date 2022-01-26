@@ -4,7 +4,7 @@ import 'package:inventory_stack/core/models/item.dart';
 import 'package:inventory_stack/ui/components/divider.dart';
 import 'package:inventory_stack/ui/components/icon_duotone.dart';
 import 'package:inventory_stack/ui/items/create_item.dart';
-import 'package:inventory_stack/ui/migration/migration.dart';
+import 'package:inventory_stack/ui/migration/migration_history_element.dart';
 import 'package:inventory_stack/utils/icons.dart';
 
 class ItemDetailPage extends StatefulWidget {
@@ -135,11 +135,12 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                     child: ListView.builder(
                       itemCount: 3,
                       itemBuilder: (context, index){
-                        if (widget.data.currentPlaceUuid != widget.data.rootPlaceUuid){
-                          return const MigrationListElement(title: false,);
-                        } else{
-                          return Container();
-                        }
+                        return Container();
+                        // if (widget.data.currentPlaceUuid != widget.data.rootPlaceUuid){
+                        //   return const MigrationListElement(title: false,);
+                        // } else{
+                        //   return Container();
+                        // }
                       },
                     ),
                   )
