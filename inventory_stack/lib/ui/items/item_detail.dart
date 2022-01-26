@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:inventory_stack/core/models/item.dart';
+import 'package:inventory_stack/ui/components/divider.dart';
 import 'package:inventory_stack/ui/components/icon_duotone.dart';
 import 'package:inventory_stack/ui/items/create_item.dart';
 import 'package:inventory_stack/ui/migration/migration.dart';

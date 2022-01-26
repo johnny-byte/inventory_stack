@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inventory_stack/core/models/item.dart';
+import 'package:inventory_stack/ui/components/divider.dart';
 import 'package:inventory_stack/ui/components/icon_duotone.dart';
 import 'package:inventory_stack/ui/items/item_detail.dart';
-import 'package:inventory_stack/ui/migration/migration.dart';
 import 'package:inventory_stack/utils/icons.dart';
 
 class ItemsListElement extends StatefulWidget {
