@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inventory_stack/core/models/item.dart';
+import 'package:inventory_stack/ui/components/icon_duotone.dart';
 import 'package:inventory_stack/ui/items/item_detail.dart';
 import 'package:inventory_stack/ui/migration/migration.dart';
 import 'package:inventory_stack/utils/icons.dart';
@@ -35,9 +37,9 @@ class _ItemsListElementState extends State<ItemsListElement> {
                     Expanded(
                       child: Row(
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.all(20.0),
-                            child: Text("I")//DeviceTypeList.fromInt(widget.data.type).icon,
+                          Padding(
+                            padding:const  EdgeInsets.all(20.0),
+                            child: IconDuotone(icon: widget.data.type?.icon,)//DeviceTypeList.fromInt(widget.data.type).icon,
                           ),
                           Expanded(
                             child: Padding(

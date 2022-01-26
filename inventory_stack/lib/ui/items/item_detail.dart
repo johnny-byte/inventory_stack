@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:inventory_stack/core/models/item.dart';
+import 'package:inventory_stack/ui/components/icon_duotone.dart';
 import 'package:inventory_stack/ui/items/create_item.dart';
 import 'package:inventory_stack/ui/migration/migration.dart';
 import 'package:inventory_stack/utils/icons.dart';
@@ -42,7 +43,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                     children: [
                       const SizedBox(width: 15),
                       //DeviceTypeList.fromInt(widget.data.type).icon,
-                      const Text("I"),
+                      IconDuotone(icon: widget.data.type?.icon),
                       const SizedBox(width: 40),
                       Expanded(
                         child: Column(
