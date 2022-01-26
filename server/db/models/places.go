@@ -15,7 +15,7 @@ type Place struct {
 	Name        string    `pg:"name" json:"name"`
 	Description string    `pg:"description" json:"description"`
 	ItemsUUID   []string  `pg:"items_uuid" json:"items_uuid"`
-	//Items       []*Item   `pg:"rel:has-many" json:"items"`
+	Items       []Item   `pg:"rel:has-many" json:"items"`
 }
 
 func (itm *Place) CreatePlace(conn *pg.DB) error {

@@ -52,7 +52,7 @@ class _ItemsListElementState extends State<ItemsListElement> {
                                         style:  CupertinoTheme.of(context).textTheme.textStyle
                                       ),
                                       const SizedBox(width: 15,),
-                                      if(widget.data.currentPlace.uuid != widget.data.rootPlace.uuid) MigrationIcons.alert,
+                                      if(widget.data.currentPlaceUuid != widget.data.rootPlaceUuid) MigrationIcons.alert,
                                     ],
                                   ),
                                   if(widget.data.description != null)
@@ -66,7 +66,7 @@ class _ItemsListElementState extends State<ItemsListElement> {
                                     style: CupertinoTheme.of(context).textTheme.tabLabelTextStyle,
                                   ),
                                   Text(
-                                    "Местоположение: ${widget.data.currentPlace.name}",
+                                    "Местоположение: ${widget.data.currentPlace?.name}",
                                     style: CupertinoTheme.of(context).textTheme.tabLabelTextStyle,
                                   ),
                                   const SizedBox(height: 15,)

@@ -96,7 +96,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                         children: [
                             MigrationIcons.home,
                           Text(
-                            widget.data.rootPlace.name,
+                            widget.data.rootPlace?.name ?? "",
                             style: CupertinoTheme.of(context)
                                 .textTheme
                                 .tabLabelTextStyle,
@@ -107,7 +107,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                         children: [
                           MigrationIcons.location,
                           Text(
-                            widget.data.currentPlace.name,
+                            widget.data.currentPlace?.name ?? "",
                             style: CupertinoTheme.of(context)
                                 .textTheme
                                 .tabLabelTextStyle,
@@ -133,7 +133,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                     child: ListView.builder(
                       itemCount: 3,
                       itemBuilder: (context, index){
-                        if (widget.data.currentPlace.uuid != widget.data.rootPlace.uuid){
+                        if (widget.data.currentPlaceUuid != widget.data.rootPlaceUuid){
                           return const MigrationListElement(title: false,);
                         } else{
                           return Container();

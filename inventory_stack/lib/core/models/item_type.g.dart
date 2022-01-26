@@ -20,10 +20,10 @@ ItemTypeData _$ItemTypeDataFromJson(Map<String, dynamic> json) => ItemTypeData(
 
 Map<String, dynamic> _$ItemTypeDataToJson(ItemTypeData instance) =>
     <String, dynamic>{
+      'uuid': instance.uuid,
       'create_at': instance.createAt.toIso8601String(),
       'upgrade_at': instance.upgradeAt.toIso8601String(),
       'delete_at': instance.deleteAt?.toIso8601String(),
-      'uuid': instance.uuid,
       'name': instance.name,
       'icon': instance.icon,
       'description': instance.description,

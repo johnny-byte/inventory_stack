@@ -53,7 +53,7 @@ class PlaceBloc extends Bloc<PlaceEvent, PlaceState> {
   int getRootItemsCount(String uuid){
     int count = 0;
     itemRepository.places?.forEach((element) {
-      if(element.rootPlace.uuid == uuid) count++;
+      if(element.rootPlaceUuid == uuid) count++;
     });
     return count;
   }
@@ -61,7 +61,7 @@ class PlaceBloc extends Bloc<PlaceEvent, PlaceState> {
   int getGuestItemsCount(String uuid){
     int count = 0;
     itemRepository.places?.forEach((element) {
-      if(element.currentPlace.uuid == uuid && element.rootPlace.uuid != uuid) count++;
+      if(element.currentPlaceUuid == uuid && element.rootPlaceUuid != uuid) count++;
     });
     return count;
   }
@@ -70,7 +70,7 @@ class PlaceBloc extends Bloc<PlaceEvent, PlaceState> {
   List<ItemData> getAllItemsInPlace(String uuid){
     List<ItemData> count = [];
     itemRepository.places?.forEach((element) {
-      if(element.currentPlace.uuid == uuid || element.rootPlace.uuid == uuid) count.add(element);
+      if(element.currentPlaceUuid == uuid || element.rootPlaceUuid == uuid) count.add(element);
     });
     return count;
   }
