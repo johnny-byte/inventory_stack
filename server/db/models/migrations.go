@@ -33,6 +33,20 @@ func (itm *Migration) GetAllMigrations(conn *pg.DB) (*[]Migration, error) {
 		Select(); err != nil {
 		return nil, err
 	}
+	for i, item := range *migrations {
+		fromPlace := &Place{}
+		toPlace := &Place{}
+		itm := &Item{}
+		itmType := &ItemType{}
+		conn.Model(itm).Where("uuid = ?0", item.ItemUUID).Select()
+		conn.Model(itmType).Where("uuid = ?0", itm.TypeUUID).Select()
+		conn.Model(fromPlace).Where("uuid = ?0", item.FromUUID).Select()
+		conn.Model(toPlace).Where("uuid = ?0", item.ToUUID).Select()
+		(*migrations)[i].Item = itm
+		(*migrations)[i].Item.Type = itmType
+		(*migrations)[i].From = fromPlace
+		(*migrations)[i].To = toPlace
+	}
 	return migrations, nil
 }
 
