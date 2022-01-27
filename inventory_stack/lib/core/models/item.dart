@@ -1,4 +1,5 @@
 import 'package:inventory_stack/core/models/item_type.dart';
+import 'package:inventory_stack/core/models/migrations.dart';
 import 'package:inventory_stack/core/models/place.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -34,8 +35,10 @@ class ItemData {
   final PlaceData? rootPlace;
   @JsonKey(name: "current_place")
   final PlaceData? currentPlace;
+  @JsonKey(name: "migrations")
+  final List<MigrationsData>? migrations;
 
-  ItemData(this.uuid, this.createAt, this.upgradeAt, this.deleteAt, this.serialNumber, this.regNumber, this.internalNumber, this.name, this.description, this.typeUuid, this.type, this.date, this.count, this.rootPlaceUuid, this.currentPlaceUuid, this.rootPlace, this.currentPlace);
+  ItemData(this.uuid, this.createAt, this.upgradeAt, this.deleteAt, this.serialNumber, this.regNumber, this.internalNumber, this.name, this.description, this.typeUuid, this.type, this.date, this.count, this.rootPlaceUuid, this.currentPlaceUuid, this.rootPlace, this.currentPlace, this.migrations);
 
   factory ItemData.fromJson(Map<String, dynamic> json) => _$ItemDataFromJson(json);
   Map<String, dynamic> toJson() => _$ItemDataToJson(this);

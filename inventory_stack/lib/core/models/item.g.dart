@@ -30,6 +30,9 @@ ItemData _$ItemDataFromJson(Map<String, dynamic> json) => ItemData(
       json['current_place'] == null
           ? null
           : PlaceData.fromJson(json['current_place'] as Map<String, dynamic>),
+      (json['migrations'] as List<dynamic>?)
+          ?.map((e) => MigrationsData.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$ItemDataToJson(ItemData instance) => <String, dynamic>{
@@ -50,4 +53,5 @@ Map<String, dynamic> _$ItemDataToJson(ItemData instance) => <String, dynamic>{
       'current_place_uuid': instance.currentPlaceUuid,
       'root_place': instance.rootPlace,
       'current_place': instance.currentPlace,
+      'migrations': instance.migrations,
     };

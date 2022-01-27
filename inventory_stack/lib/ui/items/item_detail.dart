@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:inventory_stack/core/models/item.dart';
+import 'package:inventory_stack/core/models/migrations.dart';
 import 'package:inventory_stack/ui/components/divider.dart';
 import 'package:inventory_stack/ui/components/icon_duotone.dart';
 import 'package:inventory_stack/ui/items/create_item.dart';
@@ -28,7 +29,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
       child: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           previousPageTitle: "Устройства",
-          middle: const Text("Детальная информация"),
+          middle: Text(widget.data.name),
           trailing: GestureDetector(child: MigrationIcons.edite, onTap: (){
             Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>const CreateItemPage()));
           },),
@@ -49,28 +50,33 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                       Expanded(
                         child: Column(
                           children: [
-                            Text(
-                              widget.data.name,
-                              style: CupertinoTheme.of(context)
-                                  .textTheme
-                                  .navLargeTitleTextStyle,
-                            ),
+                            const SizedBox(height: 20,),
                             Text(widget.data.description ?? "",
                                 style:
-                                    CupertinoTheme.of(context).textTheme.textStyle),
-                            Text("Гим ИНВ№${widget.data.internalNumber}",
+                                    CupertinoTheme.of(context).textTheme.textStyle.copyWith(fontStyle: FontStyle.italic)),
+                            const SizedBox(height: 20,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                              Text("ИНВ№${widget.data.internalNumber}",
                                 style: CupertinoTheme.of(context)
                                     .textTheme
-                                    .tabLabelTextStyle),
+                                    .tabLabelTextStyle.copyWith(fontSize: 16)),
                             Text("SN: ${widget.data.serialNumber}",
                                 style: CupertinoTheme.of(context)
                                     .textTheme
-                                    .tabLabelTextStyle),
+                                    .tabLabelTextStyle.copyWith(fontSize: 16)),
+                            ],)
                           ],
                         ),
                       ),
                       CupertinoButton(
-                        child: const Text("UUID"),
+                        child:  Column(
+                          children: [
+                            const Text("UUID:"),
+                            Text("-${widget.data.uuid.split("-")[1]}-"),
+                          ],
+                        ),
                         onPressed: () {
                           showCupertinoModalPopup(
                               context: context,
@@ -92,7 +98,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                   ),
                   const SizedBox(height: 20),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Column(
                         children: [
@@ -105,7 +111,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                           ),
                         ],
                       ),
-                      if (true) Column(
+                      if (widget.data.currentPlaceUuid != widget.data.currentPlaceUuid) Column(
                         children: [
                           MigrationIcons.location,
                           Text(
@@ -131,16 +137,17 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
                       ],
                     ),
                   ),
+                  if(widget.data.migrations?.isNotEmpty ?? false)
                   Expanded(
                     child: ListView.builder(
-                      itemCount: 3,
+                      itemCount: widget.data.migrations!.length,
                       itemBuilder: (context, index){
-                        return Container();
-                        // if (widget.data.currentPlaceUuid != widget.data.rootPlaceUuid){
-                        //   return const MigrationListElement(title: false,);
-                        // } else{
-                        //   return Container();
-                        // }
+                        //return Container();
+                          // if (widget.data.currentPlaceUuid != widget.data.rootPlaceUuid){
+                            return MigrationListElement(title: false, data: widget.data.migrations![index],);
+                          // } else{
+                          //   return Container();
+                          // }
                       },
                     ),
                   )
