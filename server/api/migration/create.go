@@ -31,8 +31,8 @@ func Create(conn *pg.DB) func(ctx echo.Context) error {
 		}
 
 		imt := &models.Item{}
-		imt.UUID = item.Item.UUID
-		imt.CurrentPlace = item.To
+		imt.UUID = item.UUID
+		imt.CurrentPlaceUUID = item.ToUUID
 		imt.UpdateCurrentPlace(conn)
 
 		return ctx.JSON(http.StatusCreated, item)
