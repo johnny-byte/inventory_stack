@@ -39,11 +39,16 @@ func (itm *Place) GetAllPlaces(conn *pg.DB) (*[]Place, error) {
 		Select(); err != nil {
 		return nil, err
 	}
-	
+
 	for i, item := range *places {
 		itm := &[]Item{}
 		
 		conn.Model(itm).Where("current_place_uuid = ?0", item.UUID).Select()
+		for i, element := range *itm{
+			itemType := &ItemType{}
+			conn.Model(itemType).Where("uuid = ?0", element.TypeUUID).Select()
+			(*itm)[i].Type = itemType;
+		}
 		(*places)[i].Items = *itm
 
 	}

@@ -18,24 +18,15 @@ class PlaceDetailPage extends StatefulWidget {
 }
 
 class _PlaceDetailPageState extends State<PlaceDetailPage> {
-  final String title = "Информация";
-  bool isLoading = false; // TODO imp load 
-  late List<ItemData> items;
-
-  @override
-  void initState() {
-    super.initState();
-    items = context.read<PlaceBloc>().getAllItemsInPlace(widget.place.uuid!);
-  } 
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           previousPageTitle: widget.previus,
-          middle: Text(title),
+          middle: Text(widget.place.name),
           trailing: GestureDetector(child: MigrationIcons.edite, onTap: (){
-            Navigator.of(context).push(CupertinoPageRoute(builder: (contex)=> CreatePlacePage(previousTitle: title, place: widget.place,))).then((value) => Navigator.of(context).pop());
+            Navigator.of(context).push(CupertinoPageRoute(builder: (contex)=> CreatePlacePage(previousTitle: widget.place.name, place: widget.place,))).then((value) => Navigator.of(context).pop());
           },),
         ),
         child: SafeArea(
@@ -46,28 +37,23 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
               children: [
                const SizedBox(height: 15),
                 Text(
-                    widget.place.name,
-                    style: CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
-                ),
-                Text(
                     widget.place.description ?? "",
                     style: CupertinoTheme.of(context).textTheme.textStyle,
                 ),
                 const SizedBox(height: 20),
-                if (isLoading) const Center(child: CupertinoActivityIndicator(),),
-                if(items.isEmpty && !isLoading) Expanded(child: Column(
+                if(widget.place.items?.isEmpty ?? true) Expanded(child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     MigrationIcons.empty,
                     Center(child: Text("Нет элементов", style: CupertinoTheme.of(context).textTheme.tabLabelTextStyle,)),
                   ],
                 )),
-
+                if(widget.place.items != null)
                 Expanded(
                       child: ListView.builder(
-                        itemCount: items.length,
+                        itemCount: widget.place.items!.length,
                         itemBuilder: (context, index){
-                          return ItemsListElement(data: items[index],);
+                          return ItemsListElement(data: widget.place.items![index],);
                         },
                 ))
               ],

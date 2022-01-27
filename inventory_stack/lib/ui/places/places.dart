@@ -155,14 +155,14 @@ class PlaceListElement extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Text(
-                    context.read<PlaceBloc>().getRootItemsCount(place.uuid!).toString(),
+                    place.items?.length.toString() ?? "0",
                     style: const TextStyle(fontSize: 22),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Text(
-                    context.read<PlaceBloc>().getGuestItemsCount(place.uuid!).toString(),
+                    place.items?.where((element) => element.rootPlaceUuid!=place.uuid).length.toString() ?? "0",
                     style: TextStyle(
                         fontSize: 22,
                         color: CupertinoTheme.of(context).primaryColor,

@@ -22,7 +22,7 @@ class BlocWrapper extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(lazy: true, create: (_)=>ThemeCubit()),
-        BlocProvider(lazy: true, create: (_)=>PlaceBloc(placeRepository, itemRepository)),
+        BlocProvider(lazy: true, create: (_)=>PlaceBloc(placeRepository)),
         BlocProvider(lazy: true, create: (_)=>ItemBloc(itemRepository)),
         BlocProvider(lazy: true, create: (_)=>MigrationBloc(migrationRepository)),
       ],
