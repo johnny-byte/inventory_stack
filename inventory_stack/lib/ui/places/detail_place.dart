@@ -1,6 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:inventory_stack/core/logic/place/place_bloc.dart';
-import 'package:inventory_stack/core/models/item.dart';
 import 'package:inventory_stack/core/models/place.dart';
 import 'package:inventory_stack/ui/items/item_list_element.dart';
 import 'package:inventory_stack/ui/places/create_place.dart';
