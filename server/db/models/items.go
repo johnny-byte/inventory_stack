@@ -49,7 +49,7 @@ func (itm *Item) GetAllItems(conn *pg.DB) (*[]Item, error) {
 		conn.Model(placeCurrent).Where("uuid = ?0", item.RootPlaceUUID).Select()
 		(*items)[i].Type = itemType
 		(*items)[i].RootPlace = placeRoot
-		(*items)[i].RootPlace = placeCurrent
+		(*items)[i].CurrentPlace = placeCurrent
 	}
 	return items, nil
 }
@@ -89,7 +89,7 @@ func (itm *Item) UpdateRootPlace(conn *pg.DB) error {
 func (itm *Item) UpdateCurrentPlace(conn *pg.DB) error {
 	itm.UpgradeAt = time.Now()
 	_, err := conn.Model(itm).
-		Set("current_place = ?0", itm.CurrentPlace).
+		Set("current_place_uuid = ?0", itm.CurrentPlaceUUID).
 		Where("uuid = ?0", itm.UUID).
 		Update()
 	if err != nil {
