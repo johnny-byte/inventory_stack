@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:inventory_stack/core/models/migrations.dart';
 import 'package:inventory_stack/ui/components/divider.dart';
 import 'package:inventory_stack/ui/components/icon_duotone.dart';
+import 'package:inventory_stack/utils/dateFormat.dart';
 import 'package:inventory_stack/utils/icons.dart';
 
 class MigrationListElement extends StatelessWidget {
@@ -21,7 +23,7 @@ class MigrationListElement extends StatelessWidget {
           children: [
             if (title) Padding(
               padding: const EdgeInsets.only(top: 15, left: 15),
-              child: Text(data.item?.name ?? data.uuid, style: CupertinoTheme.of(context).textTheme.actionTextStyle,),
+              child: Text(data.item?.name ?? data.uuid!, style: CupertinoTheme.of(context).textTheme.actionTextStyle,),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -42,10 +44,10 @@ class MigrationListElement extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        "data",
+                        getTimeString(data.upgradeAt!),
                         style: CupertinoTheme.of(context).textTheme.textStyle,
                       ),
-                      Text("data 2",
+                      Text(getDateString(data.upgradeAt!),
                           style: CupertinoTheme.of(context).textTheme.tabLabelTextStyle),
                     ],
                   ),

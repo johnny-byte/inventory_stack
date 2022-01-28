@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventory_stack/core/logic/migration/migration_bloc.dart';
 import 'package:inventory_stack/core/logic/theme/theme_cubit.dart';
 import 'package:inventory_stack/ui/components/search_box.dart';
-import 'package:inventory_stack/ui/migration/migration_history_element.dart';
+import 'package:inventory_stack/ui/items/item_list_element.dart';
 import 'package:inventory_stack/ui/migration/migration_history_list.dart';
 import 'package:inventory_stack/utils/icons.dart';
 import 'package:provider/src/provider.dart';
@@ -58,7 +58,7 @@ class _MigrationsPageState extends State<MigrationsPage> {
                        if (state is MigrationShowSearchedState) Expanded(child: state.data.isEmpty ? const Center(child: Text("Ничего не найдено"),) : 
                        ListView.builder(
                          itemCount: state.data.length,
-                         itemBuilder: (context, index)=> MigrationListElement(data: state.data[index],)) 
+                         itemBuilder: (context, index)=> ItemsListElement(data: state.data[index], isMigratory: true,)) 
                        ),
                        if(state is MigrationShowState) Expanded(child: MigrationHistory(list: state.data,))
                     ],)),

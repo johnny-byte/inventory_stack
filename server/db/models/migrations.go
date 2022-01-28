@@ -20,8 +20,13 @@ type Migration struct {
 	To           *Place    `pg:"rel:has-one" json:"to"`
 }
 
-func (itm *Migration) CreateMigration(conn *pg.DB) error {
-	if _, err := conn.Model(itm).Insert(itm); err != nil {
+func (migration *Migration) CreateMigration(conn *pg.DB) error {
+	itm := Item{}
+	itm.UUID = migration.ItemUUID
+	itm.CurrentPlaceUUID = migration.ToUUID
+	itm.UpdateCurrentPlace(conn);
+	
+	if _, err := conn.Model(migration).Insert(migration); err != nil {
 		return err
 	}
 	return nil

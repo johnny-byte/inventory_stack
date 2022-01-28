@@ -18,7 +18,7 @@ class MigrationShowState extends MigrationState {
 }
 
 class MigrationShowSearchedState extends MigrationState {
-  final List<MigrationsData> data;
+  final List<ItemData> data;
 
   const MigrationShowSearchedState(this.data);
 }

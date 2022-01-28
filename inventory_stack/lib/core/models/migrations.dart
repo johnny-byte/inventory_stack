@@ -7,12 +7,12 @@ part 'migrations.g.dart';
 @JsonSerializable()
 class MigrationsData {
   @JsonKey(name: "create_at")
-  final DateTime createAt;
+  final DateTime? createAt;
   @JsonKey(name: "upgrade_at")
-  final DateTime upgradeAt;
+  final DateTime? upgradeAt;
   @JsonKey(name: "delete_at")
   final DateTime? deleteAt;
-  final String uuid;
+  final String? uuid;
   @JsonKey(name: "item_uuid")
   final String itemUuid;
   @JsonKey(name: "from_uuid")
@@ -26,7 +26,7 @@ class MigrationsData {
 
   factory MigrationsData.fromJson(Map<String, dynamic> json) => _$MigrationsDataFromJson(json);
 
-  MigrationsData(this.createAt, this.upgradeAt, this.deleteAt, this.uuid, this.itemUuid, this.fromUuid, this.toUuid, this.item, this.from, this.to);
+  MigrationsData({this.createAt, this.upgradeAt, this.deleteAt, this.uuid, required this.itemUuid, required this.fromUuid, required this.toUuid, this.item, this.from, this.to});
 
   Map<String, dynamic> toJson() => _$MigrationsDataToJson(this);
 }
