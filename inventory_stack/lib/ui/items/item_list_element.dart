@@ -152,6 +152,9 @@ class _ItemsListElementState extends State<ItemsListElement> {
                                                     fromUuid: widget.data.currentPlaceUuid,
                                                     toUuid: widget.data.rootPlaceUuid
                                                   )));
+                                          if(Navigator.of(context).canPop()){
+                                            Navigator.of(context).pop();
+                                          }
                                         } else {
                                           Navigator.of(context)
                                               .push(CupertinoPageRoute(
@@ -166,9 +169,14 @@ class _ItemsListElementState extends State<ItemsListElement> {
                                                     fromUuid: widget.data.currentPlaceUuid,
                                                     toUuid: destanation
                                                   )));
+                                                   
+                                                  if(Navigator.of(context).canPop()){
+                                                    Navigator.of(context).pop();
+                                                  }
                                                 }
                                           });
                                         }
+                                        // context.read<MigrationBloc>().add(MigrationGetEvent());
                                       })
                                 ],
                               ),

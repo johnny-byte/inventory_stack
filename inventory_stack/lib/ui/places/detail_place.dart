@@ -51,7 +51,7 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
                       child: ListView.builder(
                         itemCount: widget.place.items!.length,
                         itemBuilder: (context, index){
-                          return ItemsListElement(data: widget.place.items![index],);
+                          return ItemsListElement(data: widget.place.items![index], isMigratory: true);
                         },
                 ))
               ],
