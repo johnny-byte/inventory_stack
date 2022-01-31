@@ -74,6 +74,29 @@ func (itm *Item) GetAllItemsByRootPlace(conn *pg.DB) (*[]Item, error) {
 		Select(); err != nil {
 		return nil, err
 	}
+	for i, item := range *items {
+		placeRoot := &Place{}
+		placeCurrent := &Place{}
+		itemType := &ItemType{}
+		migrations := &[]Migration{}
+		conn.Model(itemType).Where("uuid = ?0", item.TypeUUID).Select()
+		conn.Model(placeRoot).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		conn.Model(placeCurrent).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		conn.Model(placeCurrent).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		conn.Model(migrations).Where("item_uuid = ?0", item.UUID).Select()
+		(*items)[i].Type = itemType
+		(*items)[i].RootPlace = placeRoot
+		(*items)[i].CurrentPlace = placeCurrent
+		for index, mirate := range *migrations{
+			from := &Place{}
+			to := &Place{}
+			conn.Model(from).Where("uuid = ?0", mirate.FromUUID).Select()
+			conn.Model(to).Where("uuid = ?0", mirate.ToUUID).Select()
+			(*migrations)[index].From = from
+			(*migrations)[index].To = to
+		}
+		(*items)[i].Migrations = migrations
+	}
 	return items, nil
 }
 
@@ -83,6 +106,29 @@ func (itm *Item) GetAllItemsByCurrentPlace(conn *pg.DB) (*[]Item, error) {
 		Where("current_place = ?0", itm.CurrentPlace).
 		Select(); err != nil {
 		return nil, err
+	}
+	for i, item := range *items {
+		placeRoot := &Place{}
+		placeCurrent := &Place{}
+		itemType := &ItemType{}
+		migrations := &[]Migration{}
+		conn.Model(itemType).Where("uuid = ?0", item.TypeUUID).Select()
+		conn.Model(placeRoot).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		conn.Model(placeCurrent).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		conn.Model(placeCurrent).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		conn.Model(migrations).Where("item_uuid = ?0", item.UUID).Select()
+		(*items)[i].Type = itemType
+		(*items)[i].RootPlace = placeRoot
+		(*items)[i].CurrentPlace = placeCurrent
+		for index, mirate := range *migrations{
+			from := &Place{}
+			to := &Place{}
+			conn.Model(from).Where("uuid = ?0", mirate.FromUUID).Select()
+			conn.Model(to).Where("uuid = ?0", mirate.ToUUID).Select()
+			(*migrations)[index].From = from
+			(*migrations)[index].To = to
+		}
+		(*items)[i].Migrations = migrations
 	}
 	return items, nil
 }
@@ -112,38 +158,110 @@ func (itm *Item) UpdateCurrentPlace(conn *pg.DB) error {
 }
 
 func (itm *Item) FindLikeSerialNumber(conn *pg.DB) (*[]Item, error) {
-	product := &[]Item{}
+	items := &[]Item{}
 
-	_, err := conn.Query(product,
+	_, err := conn.Query(items,
 		"SELECT * FROM items WHERE LOWER(serial_number) LIKE '%"+strings.ToLower(itm.SerialNumber)+"%';")
 	if err != nil {
 		return nil, err
 	}
 
-	return product, nil
+	for i, item := range *items {
+		placeRoot := &Place{}
+		placeCurrent := &Place{}
+		itemType := &ItemType{}
+		migrations := &[]Migration{}
+		conn.Model(itemType).Where("uuid = ?0", item.TypeUUID).Select()
+		conn.Model(placeRoot).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		conn.Model(placeCurrent).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		conn.Model(placeCurrent).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		conn.Model(migrations).Where("item_uuid = ?0", item.UUID).Select()
+		(*items)[i].Type = itemType
+		(*items)[i].RootPlace = placeRoot
+		(*items)[i].CurrentPlace = placeCurrent
+		for index, mirate := range *migrations{
+			from := &Place{}
+			to := &Place{}
+			conn.Model(from).Where("uuid = ?0", mirate.FromUUID).Select()
+			conn.Model(to).Where("uuid = ?0", mirate.ToUUID).Select()
+			(*migrations)[index].From = from
+			(*migrations)[index].To = to
+		}
+		(*items)[i].Migrations = migrations
+	}
+
+	return items, nil
 }
 func (itm *Item) FindLikeInternalNumber(conn *pg.DB) (*[]Item, error) {
-	product := &[]Item{}
+	items := &[]Item{}
 
-	_, err := conn.Query(product,
+	_, err := conn.Query(items,
 		"SELECT * FROM items WHERE LOWER(internal_number) LIKE '%"+strings.ToLower(itm.InternalNumber)+"%';")
 	if err != nil {
 		return nil, err
 	}
 
-	return product, nil
+	for i, item := range *items {
+		placeRoot := &Place{}
+		placeCurrent := &Place{}
+		itemType := &ItemType{}
+		migrations := &[]Migration{}
+		conn.Model(itemType).Where("uuid = ?0", item.TypeUUID).Select()
+		conn.Model(placeRoot).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		conn.Model(placeCurrent).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		conn.Model(placeCurrent).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		conn.Model(migrations).Where("item_uuid = ?0", item.UUID).Select()
+		(*items)[i].Type = itemType
+		(*items)[i].RootPlace = placeRoot
+		(*items)[i].CurrentPlace = placeCurrent
+		for index, mirate := range *migrations{
+			from := &Place{}
+			to := &Place{}
+			conn.Model(from).Where("uuid = ?0", mirate.FromUUID).Select()
+			conn.Model(to).Where("uuid = ?0", mirate.ToUUID).Select()
+			(*migrations)[index].From = from
+			(*migrations)[index].To = to
+		}
+		(*items)[i].Migrations = migrations
+	}
+
+	return items, nil
 }
 
 func (itm *Item) FindLikeUUID(conn *pg.DB) (*[]Item, error) {
-	product := &[]Item{}
+	items := &[]Item{}
 
-	_, err := conn.Query(product,
+	_, err := conn.Query(items,
 		"SELECT * FROM items WHERE LOWER(uuid) LIKE '%"+strings.ToLower(itm.UUID)+"%';")
 	if err != nil {
 		return nil, err
 	}
 
-	return product, nil
+	for i, item := range *items {
+		placeRoot := &Place{}
+		placeCurrent := &Place{}
+		itemType := &ItemType{}
+		migrations := &[]Migration{}
+		conn.Model(itemType).Where("uuid = ?0", item.TypeUUID).Select()
+		conn.Model(placeRoot).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		conn.Model(placeCurrent).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		conn.Model(placeCurrent).Where("uuid = ?0", item.RootPlaceUUID).Select()
+		conn.Model(migrations).Where("item_uuid = ?0", item.UUID).Select()
+		(*items)[i].Type = itemType
+		(*items)[i].RootPlace = placeRoot
+		(*items)[i].CurrentPlace = placeCurrent
+		for index, mirate := range *migrations{
+			from := &Place{}
+			to := &Place{}
+			conn.Model(from).Where("uuid = ?0", mirate.FromUUID).Select()
+			conn.Model(to).Where("uuid = ?0", mirate.ToUUID).Select()
+			(*migrations)[index].From = from
+			(*migrations)[index].To = to
+		}
+		(*items)[i].Migrations = migrations
+	}
+
+	return items, nil
 }
 
 func (itm *Item) Update(conn *pg.DB) error {

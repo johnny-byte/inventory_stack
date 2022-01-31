@@ -15,7 +15,7 @@ type Place struct {
 	Name        string    `pg:"name" json:"name"`
 	Description string    `pg:"description" json:"description"`
 	ItemsUUID   []string  `pg:"items_uuid" json:"items_uuid"`
-	Items       []Item   `pg:"rel:has-many" json:"items"`
+	Items       []Item    `pg:"rel:has-many" json:"items"`
 }
 
 func (itm *Place) CreatePlace(conn *pg.DB) error {
@@ -42,12 +42,12 @@ func (itm *Place) GetAllPlaces(conn *pg.DB) (*[]Place, error) {
 
 	for i, item := range *places {
 		itm := &[]Item{}
-		
+
 		conn.Model(itm).Where("current_place_uuid = ?0", item.UUID).Select()
-		for i, element := range *itm{
+		for i, element := range *itm {
 			itemType := &ItemType{}
 			conn.Model(itemType).Where("uuid = ?0", element.TypeUUID).Select()
-			(*itm)[i].Type = itemType;
+			(*itm)[i].Type = itemType
 		}
 		(*places)[i].Items = *itm
 
@@ -56,15 +56,28 @@ func (itm *Place) GetAllPlaces(conn *pg.DB) (*[]Place, error) {
 }
 
 func (itm *Place) FindLikeName(conn *pg.DB) (*[]Place, error) {
-	place := &[]Place{}
+	places := &[]Place{}
 
-	_, err := conn.Query(place,
+	_, err := conn.Query(places,
 		"SELECT * FROM places WHERE LOWER(name) LIKE '%"+strings.ToLower(itm.Name)+"%';")
 	if err != nil {
 		return nil, err
 	}
 
-	return place, nil
+	for i, item := range *places {
+		itm := &[]Item{}
+
+		conn.Model(itm).Where("current_place_uuid = ?0", item.UUID).Select()
+		for i, element := range *itm {
+			itemType := &ItemType{}
+			conn.Model(itemType).Where("uuid = ?0", element.TypeUUID).Select()
+			(*itm)[i].Type = itemType
+		}
+		(*places)[i].Items = *itm
+
+	}
+
+	return places, nil
 }
 
 func (pls *Place) Update(conn *pg.DB) error {
