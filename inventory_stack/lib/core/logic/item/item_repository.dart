@@ -13,6 +13,7 @@ class ItemRepository{
 
   FutureOr<void> getItems() async {
     _items = await client.items();
+    _items?.sort((m1, m2)=> m2.upgradeAt.compareTo(m1.upgradeAt));
     
   }
 
@@ -26,16 +27,19 @@ class ItemRepository{
 
   FutureOr<List<ItemData>> searchByIntrnal(String number) async {
     List<ItemData> items = await client.itemsbyInternalNumber(number);
+    items.sort((m1, m2)=> m2.upgradeAt.compareTo(m1.upgradeAt));
     return items;
   }
 
   FutureOr<List<ItemData>> searchBySerial(String number) async {
     List<ItemData> items = await client.itemsBySerialNumber(number);
+    items.sort((m1, m2)=> m2.upgradeAt.compareTo(m1.upgradeAt));
     return items;
   }
 
   FutureOr<List<ItemData>> searchByUUID(String uuid) async {
     List<ItemData> items = await client.itemByUUID(uuid);
+    items.sort((m1, m2)=> m2.upgradeAt.compareTo(m1.upgradeAt));
     return items;
   }
 }

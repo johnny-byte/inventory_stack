@@ -137,6 +137,7 @@ func (itm *Item) UpdateRootPlace(conn *pg.DB) error {
 	itm.UpgradeAt = time.Now()
 	_, err := conn.Model(itm).
 		Set("root_place = ?0", itm.RootPlace).
+		Set("upgrade_at = ?0", itm.UpgradeAt).
 		Where("uuid = ?0", itm.UUID).
 		Update()
 	if err != nil {
@@ -149,6 +150,7 @@ func (itm *Item) UpdateCurrentPlace(conn *pg.DB) error {
 	itm.UpgradeAt = time.Now()
 	_, err := conn.Model(itm).
 		Set("current_place_uuid = ?0", itm.CurrentPlaceUUID).
+		Set("upgrade_at = ?0", itm.UpgradeAt).
 		Where("uuid = ?0", itm.UUID).
 		Update()
 	if err != nil {

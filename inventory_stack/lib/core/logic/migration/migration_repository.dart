@@ -22,14 +22,20 @@ class MigrationRepository{
   }
 
   FutureOr<List<ItemData>> serchItemsBySerial(String serialNumber) async {
-    return await client.itemsBySerialNumber(serialNumber);
+    List<ItemData> list = await client.itemsBySerialNumber(serialNumber);
+    list.sort((m1, m2)=> m2.upgradeAt.compareTo(m1.upgradeAt));
+    return list;
   }
 
   FutureOr<List<ItemData>> serchItemsByInternal(String internalNumber) async {
-    return await client.itemsbyInternalNumber(internalNumber);
+    List<ItemData> list = await client.itemsbyInternalNumber(internalNumber);
+    list.sort((m1, m2)=> m2.upgradeAt.compareTo(m1.upgradeAt));
+    return list;
   }
 
   FutureOr<List<ItemData>> serchItemsByUuid(String uuid) async {
-    return await client.itemByUUID(uuid);
+    List<ItemData> list = await client.itemByUUID(uuid);
+    list.sort((m1, m2)=> m2.upgradeAt.compareTo(m1.upgradeAt));
+    return list;
   }
 }
