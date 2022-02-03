@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"os/exec"
 	"strings"
 
 	"github.com/maxnemoy/inventory_stack/data_parser/data"
@@ -14,7 +15,7 @@ import (
 )
 
 func getUUID(name string, types []models.ItemType) string {
-	for _, item := range types{
+	for _, item := range types {
 		if item.Name == name {
 			return item.UUID
 		}
@@ -23,6 +24,23 @@ func getUUID(name string, types []models.ItemType) string {
 }
 
 func ConfigItems(server string, types []models.ItemType) {
+	// run python script
+	_, err := exec.Command("pip", "install", "pydantic").Output()
+	if err != nil {
+		fmt.Println(err)
+		return
+	} else {
+		fmt.Println("Started: pip install pydantic")
+	}
+
+	_, err = exec.Command("python", "-m", "python_parser").Output()
+	if err != nil {
+		fmt.Println(err)
+		return
+	} else {
+		fmt.Println("Started: python -m python_parser")
+	}
+
 	jsonFile, err := os.Open("./data.json")
 	if err != nil {
 		fmt.Println(err)
@@ -35,17 +53,17 @@ func ConfigItems(server string, types []models.ItemType) {
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	json.Unmarshal(byteValue, &items)
 
-	for index, item := range items {	
-		for _, cat := range data.TypesInitData{
-			for _, key := range cat.Keys{
-				if strings.Contains(strings.ToLower(item.Name), strings.ToLower(key)) {			
+	for index, item := range items {
+		for _, cat := range data.TypesInitData {
+			for _, key := range cat.Keys {
+				if strings.Contains(strings.ToLower(item.Name), strings.ToLower(key)) {
 					items[index].TypeUUID = getUUID(cat.Name, types)
 					break
 				}
 			}
 		}
 	}
-	
+
 	json_data, err := json.Marshal(items)
 	writer("items_send", json_data)
 
