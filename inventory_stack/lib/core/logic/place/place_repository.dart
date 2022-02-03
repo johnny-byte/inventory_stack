@@ -13,6 +13,7 @@ class PlaceRepository{
 
   FutureOr<void> getPlaces() async {
     _places = await client.places();
+    _places!.sort((m1, m2)=> m2.upgradeAt!.compareTo(m1.upgradeAt!));
   }
 
   FutureOr<void> createPlace(PlaceData place) async {
@@ -24,7 +25,8 @@ class PlaceRepository{
   }
 
   FutureOr<List<PlaceData>> searchByName(String name) async {
-    _places = await client.placeFindLike(name);
-    return _places!;
+    List<PlaceData> places = await client.placeFindLike(name);
+    places.sort((m1, m2)=> m2.upgradeAt!.compareTo(m1.upgradeAt!));
+    return places;
   }
 }

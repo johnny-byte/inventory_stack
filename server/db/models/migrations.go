@@ -7,18 +7,26 @@ import (
 )
 
 type Migration struct {
+	UUID         string    `pg:"uuid,unique,pk" json:"uuid"`
 	CreateAt     time.Time `pg:"create_at" json:"create_at"`
 	UpgradeAt    time.Time `pg:"upgrade_at" json:"upgrade_at"`
 	DeleteAt     time.Time `pg:"delete_at" json:"delete_at"`
 	ReturnedDate time.Time `pg:"returned_date" json:"returned_date"`
-	UUID         string    `pg:"uuid,unique,pk" json:"uuid"`
-	Item         Item      `pg:"item,join_fk:uuid" json:"item"`
-	From         Place     `pg:"from,join_fk:uuid" json:"from"`
-	To           Place     `pg:"to,join_fk:id" json:"to"`
+	ItemUUID     string    `pg:"item_uuid" json:"item_uuid"`
+	FromUUID     string    `pg:"from_uuid" json:"from_uuid"`
+	ToUUID       string    `pg:"to_uuid" json:"to_uuid"`
+	Item         *Item     `pg:"rel:has-one" json:"item"`
+	From         *Place    `pg:"rel:has-one" json:"from"`
+	To           *Place    `pg:"rel:has-one" json:"to"`
 }
 
-func (itm *Migration) CreateMigration(conn *pg.DB) error {
-	if _, err := conn.Model(itm).Insert(itm); err != nil {
+func (migration *Migration) CreateMigration(conn *pg.DB) error {
+	itm := Item{}
+	itm.UUID = migration.ItemUUID
+	itm.CurrentPlaceUUID = migration.ToUUID
+	itm.UpdateCurrentPlace(conn);
+	
+	if _, err := conn.Model(migration).Insert(migration); err != nil {
 		return err
 	}
 	return nil
@@ -29,6 +37,20 @@ func (itm *Migration) GetAllMigrations(conn *pg.DB) (*[]Migration, error) {
 	if err := conn.Model(migrations).
 		Select(); err != nil {
 		return nil, err
+	}
+	for i, item := range *migrations {
+		fromPlace := &Place{}
+		toPlace := &Place{}
+		itm := &Item{}
+		itmType := &ItemType{}
+		conn.Model(itm).Where("uuid = ?0", item.ItemUUID).Select()
+		conn.Model(itmType).Where("uuid = ?0", itm.TypeUUID).Select()
+		conn.Model(fromPlace).Where("uuid = ?0", item.FromUUID).Select()
+		conn.Model(toPlace).Where("uuid = ?0", item.ToUUID).Select()
+		(*migrations)[i].Item = itm
+		(*migrations)[i].Item.Type = itmType
+		(*migrations)[i].From = fromPlace
+		(*migrations)[i].To = toPlace
 	}
 	return migrations, nil
 }

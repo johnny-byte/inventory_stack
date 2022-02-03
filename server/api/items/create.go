@@ -1,15 +1,19 @@
 package items
 
 import (
-	"fmt"
 	"migration_server/db/models"
 	"net/http"
 	"time"
 
+	// "time"
+
 	"github.com/go-pg/pg/v10"
 	"github.com/gookit/validate"
-	"github.com/labstack/echo/v4"
 	uuid "github.com/satori/go.uuid"
+
+	// "github.com/gookit/validate"
+	"github.com/labstack/echo/v4"
+	// uuid "github.com/satori/go.uuid"
 )
 
 //Create fun
@@ -17,9 +21,7 @@ func Create(conn *pg.DB) func(ctx echo.Context) error {
 	return func(ctx echo.Context) error {
 		item := &models.Item{}
 		defaultPlace := &models.Place{}
-		defaultPlace.UUID = ""
 		defaultPlace, _ = defaultPlace.GetDefault(conn)
-		fmt.Println(defaultPlace)
 
 		if err := ctx.Bind(item); err != nil {
 			return ctx.JSON(http.StatusBadRequest, struct{ Error string }{err.Error()})
@@ -29,10 +31,7 @@ func Create(conn *pg.DB) func(ctx echo.Context) error {
 		if v.Validate() {
 			item.CreateAt = time.Now()
 			item.UpgradeAt = time.Now()
-			if item.RootPlace.UUID == "" {
-				item.RootPlace = *defaultPlace
-				item.CurrentPlace = *defaultPlace
-			}
+			item.RootPlaceUUID = defaultPlace.UUID
 			var err error
 			item.UUID = uuid.Must(uuid.NewV4(), err).String()
 			if err != nil {

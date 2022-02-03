@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventory_stack/core/logic/place/place_bloc.dart';
 import 'package:inventory_stack/core/models/place.dart';
+import 'package:inventory_stack/ui/components/divider.dart';
 import 'package:inventory_stack/ui/components/not_found_elements.dart';
 import 'package:inventory_stack/ui/components/search_box.dart';
-import 'package:inventory_stack/ui/migration/migration.dart';
 import 'package:inventory_stack/ui/places/create_place.dart';
 import 'package:inventory_stack/ui/places/detail_place.dart';
 import 'package:inventory_stack/utils/icons.dart';
@@ -155,14 +155,14 @@ class PlaceListElement extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Text(
-                    context.read<PlaceBloc>().getRootItemsCount(place.uuid!).toString(),
+                    place.items?.length.toString() ?? "0",
                     style: const TextStyle(fontSize: 22),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Text(
-                    context.read<PlaceBloc>().getGuestItemsCount(place.uuid!).toString(),
+                    place.items?.where((element) => element.rootPlaceUuid!=place.uuid).length.toString() ?? "0",
                     style: TextStyle(
                         fontSize: 22,
                         color: CupertinoTheme.of(context).primaryColor,

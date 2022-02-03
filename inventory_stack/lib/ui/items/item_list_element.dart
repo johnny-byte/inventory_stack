@@ -1,11 +1,19 @@
 import 'package:flutter/cupertino.dart';
+import 'package:inventory_stack/core/logic/migration/migration_bloc.dart';
 import 'package:inventory_stack/core/models/item.dart';
+import 'package:inventory_stack/core/models/migrations.dart';
+import 'package:inventory_stack/ui/components/divider.dart';
+import 'package:inventory_stack/ui/components/icon_duotone.dart';
 import 'package:inventory_stack/ui/items/item_detail.dart';
-import 'package:inventory_stack/ui/migration/migration.dart';
+import 'package:inventory_stack/ui/migration/distanation/destanation.dart';
 import 'package:inventory_stack/utils/icons.dart';
+import 'package:provider/src/provider.dart';
 
 class ItemsListElement extends StatefulWidget {
-  const ItemsListElement({Key? key, required this.data}) : super(key: key);
+  final bool isMigratory;
+  const ItemsListElement(
+      {Key? key, required this.data, this.isMigratory = false})
+      : super(key: key);
 
   final ItemData data;
 
@@ -17,15 +25,20 @@ class _ItemsListElementState extends State<ItemsListElement> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 0 ),
+      padding: const EdgeInsets.symmetric(vertical: 0),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600, minWidth: 300),
           child: GestureDetector(
-            onTap: (){
-              Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ItemDetailPage(data: widget.data,)));
+            onTap: () {
+              if (!widget.isMigratory) {
+                Navigator.of(context).push(CupertinoPageRoute(
+                    builder: (context) => ItemDetailPage(
+                          data: widget.data,
+                        )));
+              }
             },
-                  child: Container(
+            child: Container(
               height: 105,
               color: CupertinoTheme.of(context).barBackgroundColor,
               child: Padding(
@@ -35,56 +48,139 @@ class _ItemsListElementState extends State<ItemsListElement> {
                     Expanded(
                       child: Row(
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.all(20.0),
-                            child: Text("I")//DeviceTypeList.fromInt(widget.data.type).icon,
-                          ),
+                          Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: IconDuotone(
+                                icon: widget.data.type?.icon,
+                              ) //DeviceTypeList.fromInt(widget.data.type).icon,
+                              ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
                                     children: [
                                       Text(
-                                        widget.data.name.length > 24 ? widget.data.name.substring(0, 23)+"..." : widget.data.name,
-                                        style:  CupertinoTheme.of(context).textTheme.textStyle
+                                          widget.data.name.length > 24
+                                              ? widget.data.name
+                                                      .substring(0, 23) +
+                                                  "..."
+                                              : widget.data.name,
+                                          style: CupertinoTheme.of(context)
+                                              .textTheme
+                                              .textStyle),
+                                      const SizedBox(
+                                        width: 15,
                                       ),
-                                      const SizedBox(width: 15,),
-                                      if(widget.data.currentPlace.uuid != widget.data.rootPlace.uuid) MigrationIcons.alert,
+                                      if (widget.data.currentPlaceUuid !=
+                                          widget.data.rootPlaceUuid)
+                                        MigrationIcons.alert,
                                     ],
                                   ),
-                                  if(widget.data.description != null)
-                                  Text(
-                                    widget.data.description!.substring(0, widget.data.description!.length > 51 ? 50 : widget.data.description?.length).replaceAll('\n'," / "),
-                                    style: CupertinoTheme.of(context).textTheme.tabLabelTextStyle,
-                                  ),
+                                  if (widget.data.description != null)
+                                    Text(
+                                      widget.data.description!
+                                          .substring(
+                                              0,
+                                              widget.data.description!.length >
+                                                      51
+                                                  ? 50
+                                                  : widget
+                                                      .data.description?.length)
+                                          .replaceAll('\n', " / "),
+                                      style: CupertinoTheme.of(context)
+                                          .textTheme
+                                          .tabLabelTextStyle,
+                                    ),
                                   const Spacer(),
                                   Text(
                                     "Гимназия 1 ИНВ №${widget.data.internalNumber}",
-                                    style: CupertinoTheme.of(context).textTheme.tabLabelTextStyle,
+                                    style: CupertinoTheme.of(context)
+                                        .textTheme
+                                        .tabLabelTextStyle,
                                   ),
                                   Text(
-                                    "Местоположение: ${widget.data.currentPlace.name}",
-                                    style: CupertinoTheme.of(context).textTheme.tabLabelTextStyle,
+                                    "Местоположение: ${widget.data.currentPlace?.name}",
+                                    style: CupertinoTheme.of(context)
+                                        .textTheme
+                                        .tabLabelTextStyle,
                                   ),
-                                  const SizedBox(height: 15,)
+                                  const SizedBox(
+                                    height: 15,
+                                  )
                                 ],
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: SizedBox(
-                                height: 100,
-                                child: CupertinoButton(
-                                  child: MigrationIcons.right,
-                                  onPressed: () {
-                                    Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>ItemDetailPage(data: widget.data,)));
-                                  },
-                                )),
-                          ),
+                          if (!widget.isMigratory)
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              child: SizedBox(
+                                  height: 100,
+                                  child: CupertinoButton(
+                                    child: MigrationIcons.right,
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                          CupertinoPageRoute(
+                                              builder: (context) =>
+                                                  ItemDetailPage(
+                                                    data: widget.data,
+                                                  )));
+                                    },
+                                  )),
+                            ),
+                          if (widget.isMigratory)
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  CupertinoButton(
+                                      child: Text(
+                                          widget.data.currentPlaceUuid !=
+                                                  widget.data.rootPlaceUuid
+                                              ? "Вернуть"
+                                              : "Переместить"),
+                                      onPressed: () {
+                                        if (widget.data.currentPlaceUuid != widget.data.rootPlaceUuid) {
+                                          context.read<MigrationBloc>().add(MigrationCreateEvent(MigrationsData(
+                                                    itemUuid: widget.data.uuid,
+                                                    fromUuid: widget.data.currentPlaceUuid,
+                                                    toUuid: widget.data.rootPlaceUuid
+                                                  )));
+                                          if(Navigator.of(context).canPop()){
+                                            Navigator.of(context).pop();
+                                          }
+                                        } else {
+                                          Navigator.of(context)
+                                              .push(CupertinoPageRoute(
+                                                  builder: (context) =>
+                                                      const DestinationPage(
+                                                          previus: "Миграции")))
+                                              .then((value) {
+                                                if(value!= null){
+                                                  String destanation = value as String;
+                                                  context.read<MigrationBloc>().add(MigrationCreateEvent(MigrationsData(
+                                                    itemUuid: widget.data.uuid,
+                                                    fromUuid: widget.data.currentPlaceUuid,
+                                                    toUuid: destanation
+                                                  )));
+                                                   
+                                                  if(Navigator.of(context).canPop()){
+                                                    Navigator.of(context).pop();
+                                                  }
+                                                }
+                                          });
+                                        }
+                                        // context.read<MigrationBloc>().add(MigrationGetEvent());
+                                      })
+                                ],
+                              ),
+                            ),
                         ],
                       ),
                     ),
